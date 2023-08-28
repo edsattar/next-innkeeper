@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const colors = require("tailwindcss/colors");
+const { lime: main, stone: fore } = colors;
 
 module.exports = {
   darkMode: ["class"],
@@ -19,22 +20,25 @@ module.exports = {
       },
     },
     extend: {
+      flex: {
+        2: "0 0 100%",
+      },
       colors: {
         back: {
           DEFAULT: colors.white,
-          dark: colors.teal[950],
+          dark: main[950],
         },
         fore: {
-          DEFAULT: colors.teal[950],
-          dark: colors.zinc[300],
+          DEFAULT: main[950],
+          dark: fore[200],
         },
         border: {
-          DEFAULT: colors.zinc[300],
-          dark: colors.teal[900],
+          DEFAULT: fore[300],
+          dark: main[900],
         },
         input: {
-          DEFAULT: colors.zinc[300],
-          dark: colors.teal[900],
+          DEFAULT: fore[300],
+          dark: main[900],
         },
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -52,15 +56,15 @@ module.exports = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: colors.gray[200],
-          dark: colors.teal[900],
+          DEFAULT: fore[200],
+          dark: main[900],
           fore: {
-            DEFAULT: colors.teal[950],
-            dark: colors.zinc[300],
-          }
+            DEFAULT: main[950],
+            dark: fore[300],
+          },
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
+          DEFAULT: "#b6caaf",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {

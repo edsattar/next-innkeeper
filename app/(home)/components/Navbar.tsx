@@ -2,13 +2,19 @@ import { cn } from "@/lib/utils";
 import { jost } from "@/styles/fonts";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import MobileNavMenu from "./MobileNavMenu";
+import MobileNavMenu2 from "./MobileNavMenu2";
 const navigation = [
   { name: "Home", href: "#" },
   { name: "About Us", href: "#" },
   { name: "Our Rooms", href: "#" },
   { name: "Contact", href: "#" },
 ];
-const Navbar = () => {
+
+interface Props {
+  title: string;
+}
+
+const Navbar = ({ title }: Props) => {
   return (
     <nav
       className="flex items-center justify-between p-6"
@@ -16,9 +22,9 @@ const Navbar = () => {
     >
       <div className="flex">
         <a href="#" className="-m-1.5 p-1.5">
-          <span className="sr-only">The Civic Inn</span>
+          <span className="sr-only">{title}</span>
           <h1 className="smallcaps text-3xl font-bold tracking-tight">
-            The Civic Inn
+            {title}
           </h1>
         </a>
       </div>
@@ -40,6 +46,7 @@ const Navbar = () => {
       </div>
       <div className="ml-2 flex flex-row items-center gap-x-2">
         <MobileNavMenu navigation={navigation} />
+        {/* <MobileNavMenu2 navigation={navigation} /> */}
         <DarkModeToggle />
       </div>
     </nav>

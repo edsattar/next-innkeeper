@@ -25,10 +25,7 @@ const MobileNavMenu = ({ navigation }: Props) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-        >
+        <Button variant="outline" size="icon">
           <span className="sr-only">Open main menu</span>
           <Menu
             className="h-[1.2rem] w-[1.2rem]"
@@ -36,9 +33,11 @@ const MobileNavMenu = ({ navigation }: Props) => {
           />
         </Button>
       </DialogTrigger>
-      <DialogHeader>
-        <DialogTitle>The Civic Inn</DialogTitle>
-      </DialogHeader>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>The Civic Inn</DialogTitle>
+        </DialogHeader>
+      </DialogContent>
     </Dialog>
   );
 };

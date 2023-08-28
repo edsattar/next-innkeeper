@@ -1,48 +1,37 @@
 import { cn } from "@/lib/utils";
-import { jost } from "@/styles/fonts";
+import { josefin as font } from "@/styles/fonts";
 import Image from "next/image";
+import heroImage from "@/public/hero.jpg";
 
-const Hero = () => {
+interface Props {
+  title: string;
+}
+const Hero = ({title}: Props) => {
   return (
-    <div className="relative h-[480px] w-full px-6 pt-32 lg:px-8">
+    <>
       <div className="absolute inset-x-0 z-10 h-full ">
         <div className="absolute inset-x-0 z-10 h-full bg-back-dark opacity-80 "></div>
         <Image
-          src="/hero.jpg"
+          fill
+          src={heroImage}
           alt="Hero"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-          quality={100}
+          className="object-cover"
         />
       </div>
 
-      {/* <BlurPattern /> */}
-      <div className="absolute inset-x-0 top-64 z-20 mx-auto h-40 w-auto sm:top-60 sm:h-48">
-        {/* <div className="absolute opacity-80 bg-back-dark w-full h-full"></div> */}
-        <div className="absolute my-8 h-full w-full text-center text-fore-dark">
-          <p
-            className={cn(
-              "my-4 text-sm leading-8  sm:text-lg",
-              jost.className,
-            )}
-          >
+      {/* prettier-ignore */}
+      <div className="absolute flex flex-col inset-x-0 h-full w-full z-20 mx-auto text-center justify-center text-fore-dark">
+          <p className={cn("my-4 text-2xl leading-8 sm:text-3xl", font.className)}>
             Welcome To
           </p>
-          <h1 className="smallcaps text-5xl font-bold tracking-tight  sm:text-6xl">
-            The Civic Inn
+          <h1 className="smallcaps text-6xl font-bold tracking-tight sm:text-8xl">
+            {title}
           </h1>
-          <p
-            className={cn(
-              "my-4 text-sm leading-8  sm:text-lg",
-              jost.className,
-            )}
-          >
-            Location Comfort Value
+          <p className={cn("my-4 text-xl leading-8 sm:text-2xl", font.className)}>
+            Location • Comfort • Value
           </p>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Hero;
