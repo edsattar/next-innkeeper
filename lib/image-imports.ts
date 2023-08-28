@@ -1,9 +1,9 @@
-import front_desk from "@/public/hero_carousel/front_desk.jpg";
-import lobby_a from "@/public/hero_carousel/lobby_a.jpg";
-import lobby_b from "@/public/hero_carousel/lobby_b.jpg";
-import restaurant_a from "@/public/hero_carousel/restaurant_a.jpg";
-import restaurant_b from "@/public/hero_carousel/restaurant_b.jpg";
-import building_front from "@/public/hero_carousel/building_front.jpg";
+import front_desk from "@/public/front_desk.jpg";
+import lobby_a from "@/public/lobby_a.jpg";
+import lobby_b from "@/public/lobby_b.jpg";
+import restaurant_a from "@/public/restaurant_a.jpg";
+import restaurant_b from "@/public/restaurant_b.jpg";
+import building_front from "@/public/building_front.jpg";
 import { StaticImageData } from "next/image";
 
 type HeroCarouselSlide = {
