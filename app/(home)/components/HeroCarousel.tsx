@@ -30,10 +30,7 @@ const HeroCarousel = () => {
                 <AspectRatio ratio={3 / 2}>
                   <CardContent className="relative h-full w-full overflow-hidden p-2 ">
                     <Image
-                      // height={400}
-                      // width={800}
                       fill
-                      placeholder="blur"
                       src={e.src}
                       className="object-cover"
                       alt={e.alt}
