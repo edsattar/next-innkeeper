@@ -18,7 +18,7 @@ const HeroCarousel = () => {
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
-    <div className="relative container">
+    <div className="container relative">
       <div className="overflow-hidden" ref={emblaRef}>
         {/* viewport */}
         <div className="flex">
@@ -26,13 +26,14 @@ const HeroCarousel = () => {
           {slides.map((e) => (
             <div key={e.id} className="min-w-0 flex-2 p-8 pb-2">
               {/* slide */}
-              <Card className="h-full border-none overflow-hidden">
+              <Card className="h-full overflow-hidden border-none">
                 <AspectRatio ratio={3 / 2}>
                   <CardContent className="relative h-full w-full overflow-hidden p-2 ">
                     <Image
                       // height={400}
                       // width={800}
                       fill
+                      placeholder="blur"
                       src={e.src}
                       className="object-cover"
                       alt={e.alt}
@@ -47,10 +48,10 @@ const HeroCarousel = () => {
           ))}
         </div>
       </div>
-      <Button variant="carousel" className="absolute right-[51%] bottom-3" onClick={scrollPrev}>
+      <Button variant="carousel" className="absolute bottom-3 right-[51%]" onClick={scrollPrev}>
         <ChevronLeft />
       </Button>
-      <Button variant="carousel" className="absolute left-[51%] bottom-3" onClick={scrollNext}>
+      <Button variant="carousel" className="absolute bottom-3 left-[51%]" onClick={scrollNext}>
         <ChevronRight />
       </Button>
     </div>
