@@ -25,8 +25,8 @@ export default function RootLayout({ children }: Props) {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          // enableSystem
         >
           {children}
         </ThemeProvider>

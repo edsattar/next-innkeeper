@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 
 import Image from "next/image";
-import heroImage from "@/public/building_front_bw.png";
+import heroImage from "@/public/building_front_bw.webp";
 
 export default function Home() {
   const title = "The Civic Inn";
