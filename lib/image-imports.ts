@@ -1,5 +1,3 @@
-import { StaticImageData } from "next/image";
-
 type HeroCarouselSlide = {
   id: number;
   src: string;
@@ -18,17 +16,17 @@ export const hero_carousel_slides: HeroCarouselSlide[] = [
   },
   {
     id: 2,
-    src: "/lobby_a.jpg",
-    alt: "lobby_a",
-    subtitle: "lobby_a",
-    description: "lobby_a",
+    src: "/lobby_c.png",
+    alt: "lobby_c",
+    subtitle: "lobby_c",
+    description: "lobby_c",
   },
   {
     id: 3,
-    src: "/lobby_b.jpg",
-    alt: "lobby_b",
-    subtitle: "lobby_b",
-    description: "lobby_b",
+    src: "/lobby_c.jpg",
+    alt: "lobby_c",
+    subtitle: "lobby_c",
+    description: "lobby_c",
   },
   {
     id: 4,
