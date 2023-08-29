@@ -7,7 +7,7 @@ interface Props {
 
 const Section = ({ children, className }: Props) => {
   return (
-    <div className={cn("relative h-[480px] w-full bg-back dark:bg-back-dark", className)}>
+    <div className={cn("relative max-h-[480px] w-full bg-back dark:bg-back-dark", className)}>
       {children}
     </div>
   );

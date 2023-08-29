@@ -81,7 +81,5 @@ body,
     * {
         @apply border-border dark:border-border-dark;
     }
-    body {
-        @apply bg-back dark:bg-back-dark text-foreground;
-    }
+
 }

@@ -25,7 +25,7 @@ export const hero_carousel_slides: HeroCarouselSlide[] = [
   },
   {
     id: 3,
-    src: "/lobby_b.jpg",    
+    src: "/lobby_b.jpg",
     alt: "lobby_b",
     subtitle: "lobby_b",
     description: "lobby_b",
@@ -50,5 +50,12 @@ export const hero_carousel_slides: HeroCarouselSlide[] = [
     alt: "building_front",
     subtitle: "building_front",
     description: "building_front",
+  },
+  {
+    id: 7,
+    src: "/grid.jpg",
+    alt: "grid",
+    subtitle: "grid",
+    description: "grid",
   },
 ];

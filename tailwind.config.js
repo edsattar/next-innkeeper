@@ -25,7 +25,7 @@ module.exports = {
       },
       colors: {
         back: {
-          DEFAULT: colors.white,
+          DEFAULT: colors.stone[200],
           dark: main[950],
         },
         fore: {

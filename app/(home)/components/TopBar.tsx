@@ -6,8 +6,6 @@ import { useState, useEffect } from "react";
 import { format, utcToZonedTime } from "date-fns-tz";
 
 import { playfair } from "@/fonts";
-import { Separator } from "@/components/ui/separator";
-import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 const TopBar = () => {
   const [date, setDate] = useState(new Date());
@@ -32,7 +30,6 @@ const TopBar = () => {
   const formattedDate = format(zonedDate, formatString, { timeZone });
 
   return (
-    <div className="container">
       <div className="flex flex-wrap text-sm text-center font-medium text-fore/70 dark:text-fore-dark/70 gap-x-5 p-2">
         <p className={playfair.className}>
           <Phone className="inline-block w-4 h-4 mr-2 mb-1" />
@@ -43,9 +40,6 @@ const TopBar = () => {
           {formattedDate} (+6)
         </p>
       </div>
-
-      <Separator />
-    </div>
   );
 };
 export default TopBar;

@@ -4,7 +4,7 @@
             "files": "*.ts*",
             "options": {
                 "tabWidth": 2,
-                "printWidth": 70
+                "printWidth": 270
             }
         }
     ],
