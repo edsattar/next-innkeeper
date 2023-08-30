@@ -116,7 +116,7 @@ export default function Home() {
             jost.className,
           )}
         >
-          <p>House 12, Road 20, Sector 11, Uttara, Dhaka 1230</p>
+          <p>House 12, Road 20, Sector 11, Uttara, Dhaka 1230, Bangladesh</p>
           <div id="contact" className="w-[480px] rounded bg-stone-900/10 m-8 p-8">
             <p className={cn("pb-6 text-2xl ", playfair.className)}>Contact us</p>
             <p>Email: contact@thecivicinn.com, civicinn1988@gmail.com</p>
