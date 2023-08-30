@@ -4,9 +4,10 @@ import { DarkModeToggle } from "@/components/DarkModeToggle";
 import MobileNavMenu from "./MobileNavMenu";
 const navigation = [
   { name: "Home", href: "#" },
-  { name: "About Us", href: "#about" },
   { name: "Rooms", href: "#rooms" },
   { name: "Restaurant", href: "#restaurant" },
+  { name: "Location", href: "#location" },
+  { name: "Contact", href: "#contact" },
 ];
 
 interface Props {
