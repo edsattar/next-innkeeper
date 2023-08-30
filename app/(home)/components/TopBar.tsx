@@ -5,6 +5,8 @@ import { Phone, CalendarClock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { format, utcToZonedTime } from "date-fns-tz";
 
+import { DarkModeToggle } from "@/components/DarkModeToggle";
+
 import { playfair } from "@/fonts";
 
 const TopBar = () => {
@@ -30,16 +32,22 @@ const TopBar = () => {
   const formattedDate = format(zonedDate, formatString, { timeZone });
 
   return (
-      <div className="flex flex-wrap text-sm text-center font-medium text-fore/70 dark:text-fore-dark/70 gap-x-5 p-2">
+    <div className="flex h-8 items-center text-center text-sm font-medium opacity-80">
+      <div className="flex gap-x-5">
         <p className={playfair.className}>
-          <Phone className="inline-block w-4 h-4 mr-2 mb-1" />
+          <Phone className="mb-1 mr-2 inline-block h-4 w-4" />
           +880-1994-851928
         </p>
-        <p className={playfair.className}>
-          <CalendarClock className="inline-block w-4 h-4 mr-2 mb-1" />
-          {formattedDate} (+6)
+         <p className={playfair.className}>
+          <CalendarClock className="mb-1 mr-2 inline-block h-4 w-4" />
+          {formattedDate}
         </p>
       </div>
+      <div className="flex-grow"></div>
+      <div>
+        <DarkModeToggle />
+      </div>
+    </div>
   );
 };
 export default TopBar;

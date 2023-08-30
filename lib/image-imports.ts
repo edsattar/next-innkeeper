@@ -1,8 +1,6 @@
-export const hero_carousel_slides = [
+export const hero_slides = [
   {
     id: 1,
-    height: 1175,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zT6c5Y-IJOX5X27B1Gx7FmgKJVqp-E_ty_eF8bGNGgu5W9_kWP1Hf9kObXfMDf0_eBhraOzT8aEQ78DxRIwoXPjD30HQ=w1600",
     alt: "front_desk",
     subtitle: "front_desk",
@@ -10,8 +8,6 @@ export const hero_carousel_slides = [
   },
   {
     id: 2,
-    height: 1067,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-w95w6w93fvkjFv7r6XbOVqXsaSKZjVVN9-tXpAeiToDkGuJjnoPFKFLmce8SNV_CyHW5meGjjVIVxefPdU7ZATFCnDcg=w1600",
     alt: "lobby_a",
     subtitle: "lobby_a",
@@ -19,8 +15,6 @@ export const hero_carousel_slides = [
   },
   {
     id: 3,
-    height: 1245,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-wWDRWGTzthhMEjN_pThwZOyBSTy6yLIYuyi0kcjGLi_Tnh7ZVjrqK_H4TUHDZQdx1e3RSDpIoBJegmcQLKOH4TUvgkog=w1600",
     alt: "lobby_b",
     subtitle: "lobby_b",
@@ -28,8 +22,6 @@ export const hero_carousel_slides = [
   },
   {
     id: 4,
-    height: 980,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-ylowQDpH7_GQwvi-jZcjlyGJ8Dt7h-j-DfOOJyTyrwTYpIx2nQbvkovmsJEgqJQ7a0x_i1mTnujWvMpAgi3-t8YWQtwQ=w1600",
     alt: "restaurant_a",
     subtitle: "restaurant_a",
@@ -37,8 +29,6 @@ export const hero_carousel_slides = [
   },
   {
     id: 5,
-    height: 975,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-wVHvEdw9iJbfVQ6vfYOEd0iPXIZq-ennlAziyv4IAohsEPBTxuOmIsmvLDLQPMdtO0aInCiqNbQIXEQKD8cEy9XLNQBA=w1600",
     alt: "restaurant_b",
     subtitle: "restaurant_b",
@@ -46,20 +36,120 @@ export const hero_carousel_slides = [
   },
   {
     id: 6,
-    height: 1067,
-    width: 1600,
     src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zzFUq2URNTrI_o7jr5LUUljHM8-3ixBWqW0ShpyKsdQr3myip-mGXB3IUhlK9yWUXzbrDEiQgLpuOHHhg7xg91UN7V=w1600",
     alt: "building_front",
     subtitle: "building_front",
     description: "building_front",
   },
+];
+
+export const room_slides = [
+  {
+    id: 1,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-wzDrCI4diIA9WEzPwaj67IOCiUivgJBGQqvp8m6KikuuFZe92Fh6CvfIhqi62Nu2rrtlrEHP7Vgsaz-6OL92Q3SsRmEw=w1600",
+    alt: "family_a",
+    subtitle: "family_a",
+    description: "family_a",
+  },
+  {
+    id: 2,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-w4fI-PR3riNy6oN4j0EgYH-6ANbHFWd5TS-b6HVfuQqEgnD7mH4yqgQsvAH1xcjEETgCotCTVL-3TCu8axUu-iqO6u9A=w1600",
+    alt: "family_b",
+    subtitle: "family_b",
+    description: "family_b",
+  },
+  {
+    id: 3,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zirn0p75XSTRQzIB6fY-4qytZJUPuf0Bl7jRBp-lgay2iBfXcUSmT0SzDHx1mzIC1F0X9JV4onvryobOK26Jq07Hsulg=w1600",
+    alt: "family_c",
+    subtitle: "family_c",
+    description: "family_c",
+  },
+  {
+    id: 4,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-w4mzBrFm6alv5CKxtsFEx__cYelpFOBSVlQIRyLFaTux-Zfl2nptjdKD1bVU1t5dxMOaZOuAEUdgze4AXgdKig_EjD=w1600",
+    alt: "family_d",
+    subtitle: "family_d",
+    description: "family_d",
+  },
+  {
+    id: 5,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zFpTBJSwQs9nA5smyEB0B94wsx-5q7yGIq-xS8nS-AshlqkQwvZOWurY24yEwydATf0EekQ69p0VrpYtdj1tslvwlKzw=w1600",
+    alt: "executive_a",
+    subtitle: "executive_a",
+    description: "executive_a",
+  },
+  {
+    id: 6,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-xJuRNAS14Jc4j8V4YQTHOZlI9rXNCKTyBXvCQLZzk2Eq8prjbxrWlZdKqaTEzcT6WeLSjWala0iVAvEgwsVmbJQxjrxQ=w1600",
+    alt: "executive_b",
+    subtitle: "executive_b",
+    description: "executive_b",
+  },
   {
     id: 7,
-    height: 1200,
-    width: 1920,
-    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-wVAWvZeFHP3uivaIQDP7HeSoPLtYMElNf8i0eVqxDOFXaLIFz6xungi9sNVfLRTQhbDIjD7u08OU9CQCWxI0VTqym45w=w1920",
-    alt: "grid",
-    subtitle: "grid",
-    description: "grid",
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-w9-efnnKiLHnWC-c8vojyO8FLFA6m7imVmVxR6C-y5oGXqqYB9HZG8gY3qsHa7_VXZtKw00x-f3X8TjHzIXlxaNkPLZA=w1600",
+    alt: "twin_a",
+    subtitle: "twin_a",
+    description: "twin_a",
+  },
+  {
+    id: 8,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-yYkS49b6dgw6CZlH1UeUkJC16vogKDOY16wje85r-g66d3YYY6qyI8j5LlDk1WLo5pVAIWIU9Nh8GBX1B7bzycrismKw=w1600",
+    alt: "twin_b",
+    subtitle: "twin_b",
+    description: "twin_b",
+  },
+  {
+    id: 9,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-z9Q-BEc2bi_JSE97Y1NITsfNNajyjdMGceLjDAjgzJwPUrpA00j6Q8l--3XPRBNmHeue1Rm5I-pHByeGs_uYVnr4KiVA=w1600",
+    alt: "tea",
+    subtitle: "tea",
+    description: "tea",
   },
 ];
+
+export const restaurant_slides = [
+  {
+    id: 1,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-yzhok74ztfLQTKCAIMCjst1xckxVqOE-34ypz3R9UTSJkmA40kzhi97rgtFeP89q3UY7o0cKAIH9YHxMx11msgnbxV=w1600",
+    alt: "restaurant_1",
+    subtitle: "restaurant_1",
+    description: "restaurant_1",
+  },
+  {
+    id: 2,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zwHK27rvMxE5BkiQhVwGOJPEGeUJRybM3aNyVW62ggYzS4_8GmVXzBJeYnIhKsjkbuVC0FB9Zqfh93wQ9NX2rpatUm=w1600",
+    alt: "restaurant_2",
+    subtitle: "restaurant_2",
+    description: "restaurant_2",
+  },
+  {
+    id: 3,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-xZIaMtW097EuvpnOB0Urqn1IjSkOrIkLJU94wJHZTSDFD9JEQVOd6b6msWrcG4a-Hc1B98UKxAmHmA7hU7UCJhJ5bp=w1600",
+    alt: "restaurant_3",
+    subtitle: "restaurant_3",
+    description: "restaurant_3",
+  },
+  {
+    id: 4,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-ynyprX7z5x0PNKzKgf8MEEu50Q3U6DNrXjwOOg4iGN2P-N8Oj8BbPnVn48gg4M25k17FPg7nZ8xllbEDhTwnutTalBcQ=w1600",
+    alt: "restaurant_4",
+    subtitle: "restaurant_4",
+    description: "restaurant_4",
+  },
+  {
+    id: 5,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-zVqn4MI9zrWnowpD7CxnYOxeFt25mGzqS0jafA5tcEfnPS03EtNr40KQGgP87dGCiQkD761sgn0_jB13wHkY8-kNwR=w1600",
+    alt: "restaurant_5",
+    subtitle: "restaurant_5",
+    description: "restaurant_5",
+  },
+  {
+    id: 6,
+    src: "https://lh3.googleusercontent.com/drive-viewer/AITFw-z6L4aihM-iHvP4wRuh2sfPvvBwR-3TlpGhTA-qmejknZC8uOKrj0lUV1YujGOC7-fjqVu3Q-jBpHHzEiMu0ZkXx8NNIg=w1600",
+    alt: "restaurant_6",
+    subtitle: "restaurant_6",
+    description: "restaurant_6",
+  },
+]
