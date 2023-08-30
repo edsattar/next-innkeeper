@@ -122,7 +122,7 @@ export default function Home() {
             <p>Email: contact@thecivicinn.com, civicinn1988@gmail.com</p>
             <p>Land: +880 24895-6781, 6782</p>
             <p>Mob:  +880 181110-6782, 6791</p>
-            <p>Whatsapp: +880 1994-851928</p>
+            <p>Whatsapp: +880 199485-1928</p>
             <p>https://www.facebook.com/civicinn</p>
           </div>
         </div>
