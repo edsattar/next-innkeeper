@@ -18,15 +18,12 @@ const MobileNavMenu = ({ navigation }: Props) => {
     <div>
       <div className="flex md:hidden">
         <Button
-          variant="outline"
+          variant="link"
           size="icon"
           onClick={() => setMobileMenuOpen(true)}
         >
           <span className="sr-only">Open main menu</span>
-          <Menu
-            className="h-[1.2rem] w-[1.2rem]"
-            aria-hidden="true"
-          />
+          <Menu className="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
         </Button>
       </div>
       <Dialog
@@ -35,10 +32,9 @@ const MobileNavMenu = ({ navigation }: Props) => {
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
       >
-        <div className="fixed inset-0 z-50" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 dark:bg-back-dark sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-back p-3 dark:bg-back-dark sm:max-w-xs sm:p-6 sm:ring-1 sm:ring-gray-900/10">
+          <div className="flex items-center justify-between px-2">
+            <a href="#" className="-m-1.5 p-1.5 pt-2 sm:invisible">
               <span className="sr-only">The Civic Inn</span>
               <h1 className="smallcaps text-3xl font-bold tracking-tight">
                 The Civic Inn
@@ -50,7 +46,7 @@ const MobileNavMenu = ({ navigation }: Props) => {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
-              <X className="h-6 w-6" aria-hidden="true" />
+              <X className="mr-2 h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <div className="mt-6 flow-root">
@@ -60,7 +56,8 @@ const MobileNavMenu = ({ navigation }: Props) => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="dark:hover:bg-muted-dark -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-fore hover:bg-muted dark:text-fore-dark"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-fore hover:bg-muted dark:text-fore-dark dark:hover:bg-muted-dark"
                   >
                     {item.name}
                   </a>
