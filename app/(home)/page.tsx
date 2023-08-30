@@ -52,18 +52,25 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-screen-2xl bg-back-dark/80 text-fore-dark dark:bg-back dark:text-fore">
+      <div className=" bg-back-dark/80 text-fore-dark dark:bg-back dark:text-fore">
+        <div className="mx-auto max-w-screen-2xl">
+
+
         <div className="flex justify-center pt-8 text-center text-base sm:text-3xl">
           <h1>Rooms</h1>
         </div>
+
         <Carousel slides={room_slides} />
-        <div className="flex justify-center p-8 pt-1 text-center text-base sm:text-2xl">
-          <p className="p-4">
+
+        <div className="flex justify-center p-12 pt-1 text-center text-base sm:text-2xl">
+          <p>
             The units at the hotel come with air-conditioning, cabinet, desk and
             a flat-screen TV. Every room includes a kettle, while certain rooms
             include a kitchenette with an oven and a microwave.
           </p>
         </div>
+        </div>
+
       </div>
 
       <div className="mx-auto max-w-screen-2xl">
@@ -71,8 +78,8 @@ export default function Home() {
           <h1>Restaurant</h1>
         </div>
         <Carousel slides={restaurant_slides} />
-        <div className="flex justify-center p-8 pt-1 text-center text-base sm:text-2xl">
-          <p className="p-4">
+        <div className="flex justify-center p-12 pt-1 text-center text-base sm:text-2xl">
+          <p>
           At Civic Inn you will find a restaurant serving Indian, Chinese and Oriental cuisine. A halal continental breakfast is available every morning at the restaurant. A vegan option can also be requested.
           </p>
         </div>
