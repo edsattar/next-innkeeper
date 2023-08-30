@@ -16,7 +16,7 @@ interface Props {
 const Navbar = ({ title }: Props) => {
   return (
       <nav
-        className="flex items-center justify-between p-3 sm:p-6"
+        className="flex items-center justify-between p-6"
         aria-label="Global"
       >
         <div className="flex">

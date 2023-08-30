@@ -32,7 +32,7 @@ const MobileNavMenu = ({ navigation }: Props) => {
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
       >
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-back p-3 dark:bg-back-dark sm:max-w-xs sm:p-6 sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-back  dark:bg-back-dark sm:max-w-xs p-6 sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between px-2">
             <a href="#" className="-m-1.5 p-1.5 pt-2 sm:invisible">
               <span className="sr-only">The Civic Inn</span>
