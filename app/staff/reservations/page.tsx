@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import DataTable from "./components/DataTable";
 import { reservations_list_columns } from "./components/Columns";
 
-import { db, reservations_list } from "@/db";
+import { reservations_list } from "@/db";
 import { eq, sql } from "drizzle-orm";
 import { reservations, customers, countries } from "@/db/schema";
 import Link from "next/link";
