@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const colors = require("tailwindcss/colors");
-const { lime: main, stone: fore } = colors;
+const { lime, red, stone } = colors;
 
 module.exports = {
   darkMode: ["class"],
@@ -25,42 +25,45 @@ module.exports = {
       },
       colors: {
         back: {
-          DEFAULT: colors.stone[200],
-          dark: main[950],
+          DEFAULT: stone[100],
+          dark: lime[950],
         },
         fore: {
-          DEFAULT: main[950],
-          dark: fore[200],
+          DEFAULT: lime[950],
+          dark: stone[100],
         },
         border: {
-          DEFAULT: fore[300],
-          dark: main[900],
+          DEFAULT: stone[300],
+          dark: lime[900],
         },
         input: {
-          DEFAULT: fore[300],
-          dark: main[900],
+          DEFAULT: stone[300],
+          dark: lime[900],
         },
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: lime[900],
+          foreground: stone[100],
+          fore: stone[100],
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: stone[300],
+          foreground: lime[950],
+          dark: lime[900],
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
+          DEFAULT: red[500],
           foreground: "hsl(var(--destructive-foreground))",
+          dark: red[500],
         },
         muted: {
-          DEFAULT: fore[200],
-          dark: main[900],
+          DEFAULT: stone[200],
+          dark: "#28400c",
           fore: {
-            DEFAULT: main[950],
-            dark: fore[300],
+            DEFAULT: stone[500],
+            dark: stone[300],
           },
         },
         accent: {
@@ -70,6 +73,7 @@ module.exports = {
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
+          dark: lime[950],
         },
         card: {
           DEFAULT: "hsl(var(--card))",

@@ -1,20 +1,18 @@
 import { cn } from "@/lib/utils";
-import { jost } from "@/styles/fonts";
+import { jost, playfair } from "@/styles/fonts";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 import MobileNavMenu from "./MobileNavMenu";
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Rooms", href: "#rooms" },
-  { name: "Restaurant", href: "#restaurant" },
-  { name: "Location", href: "#location" },
-  { name: "Contact", href: "#contact" },
-];
+
 
 interface Props {
   title: string;
+  navigation: {
+    name: string;
+    href: string;
+  }[];
 }
 
-const Navbar = ({ title }: Props) => {
+const Navbar = ({ title, navigation }: Props) => {
   return (
       <nav
         className="flex items-center justify-between p-6"
@@ -23,7 +21,7 @@ const Navbar = ({ title }: Props) => {
         <div className="flex">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">{title}</span>
-            <h1 className="smallcaps text-3xl font-bold tracking-tight">
+            <h1 className={cn("smallcaps text-3xl font-bold tracking-tight", playfair.className)}>
               {title}
             </h1>
           </a>
@@ -35,17 +33,14 @@ const Navbar = ({ title }: Props) => {
             <a
               key={item.name}
               href={item.href}
-              className={cn(
-                "text-base font-semibold uppercase leading-6 text-fore dark:text-fore-dark",
-                jost.className,
-              )}
-            >
+              className={cn("text-base font-semibold uppercase leading-6 text-fore dark:text-fore-dark", jost.className)} >
               {item.name}
             </a>
           ))}
         </div>
         <div className="ml-2 flex flex-row items-center gap-x-2">
           <MobileNavMenu navigation={navigation} />
+          <DarkModeToggle />
         </div>
       </nav>
 

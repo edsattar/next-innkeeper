@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import { jost, josefin, playfair } from "@/styles/fonts";
 
-import Navbar from "./components/Navbar";
-import TopBar from "./components/TopBar";
+import { Carousel, Navbar, Section, TopBar } from "./components";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 
@@ -11,10 +10,14 @@ import {
   room_slides,
   restaurant_slides,
 } from "@/lib/image-imports";
-
 import { reviews } from "@/lib/customer_reviews";
-import Carousel from "./components/Carousel";
-import Section from "./components/Section";
+
+const navigation = [
+  { name: "Rooms", href: "#rooms" },
+  { name: "Restaurant", href: "#restaurant" },
+  { name: "Location", href: "#location" },
+  { name: "Staff", href: "/staff" },
+];
 
 export default function Home() {
   const title = "The Civic Inn";
@@ -25,7 +28,7 @@ export default function Home() {
         <div className="px-2 sm:container">
           {/* <TopBar /> */}
           {/* <Separator className="bg-border-dark opacity-50 dark:bg-border" /> */}
-          <Navbar title={title} />
+          <Navbar title={title} navigation={navigation}/>
         </div>
       </div>
       <div className="relative top-0 h-[380px]">
@@ -40,7 +43,7 @@ export default function Home() {
           <p className={cn("my-4 text-2xl sm:text-3xl", josefin.className)}>
             Welcome To
           </p>
-          <h1 className="smallcaps text-6xl font-bold tracking-tight sm:text-8xl">
+          <h1 className={cn("smallcaps text-6xl font-bold tracking-tight sm:text-8xl", playfair.className)}>
             {title}
           </h1>
           <p className={cn("my-4 text-xl sm:text-2xl", josefin.className)}>
@@ -110,18 +113,15 @@ export default function Home() {
             loading="lazy"
           />
         </div>
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center p-12 pt-1 text-center text-base sm:text-lg",
-            jost.className,
-          )}
-        >
+        <div className={cn("flex flex-col items-center justify-center p-12 pt-1 text-center text-base sm:text-lg", jost.className)}>
           <p>House 12, Road 20, Sector 11, Uttara, Dhaka 1230, Bangladesh</p>
-          <div id="contact" className="w-[480px] rounded bg-stone-900/10 m-8 p-8">
-            <p className={cn("pb-6 text-2xl ", playfair.className)}>Contact us</p>
+          <div id="contact" className="m-8 w-[480px] rounded bg-stone-500/20 p-8">
+            <p className={cn("pb-6 text-2xl", playfair.className)}>
+              Contact us
+            </p>
             <p>Email: contact@thecivicinn.com, civicinn1988@gmail.com</p>
             <p>Land: +880 24895-6781, 6782</p>
-            <p>Mob:  +880 181110-6782, 6791</p>
+            <p>Mob: +880 181110-6782, 6791</p>
             <p>Whatsapp: +880 199485-1928</p>
             <p>https://www.facebook.com/civicinn</p>
           </div>

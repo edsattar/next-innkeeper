@@ -1,0 +1,92 @@
+Table users {
+  id integer [primary key]
+  name varchar
+  role varchar
+  password varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table room_types {
+  id integer [primary key]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table rooms {
+  id integer [primary key]
+  room_type_id integer [ref: > room_types.id]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table customers {
+  id integer [primary key]
+  name varchar
+  email varchar
+  phone varchar
+  id_card_type varchar
+  id_card_number varchar
+  nationality varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table reservations {
+  id integer [primary key]
+  room_id integer [ref: > rooms.id]
+  customer_id integer [ref: > customers.id]
+  room_rate integer
+  source varchar
+  check_in timestamp
+  check_out timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+
+Table bill_types {
+  id integer [primary key]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table bills {
+  id integer [primary key]
+  reservation_id integer [ref: > reservations.id]
+  bill_type varchar [ref: > bill_types.name]
+  amount integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table bill_items {
+  id integer [primary key]
+  bill_id integer [ref: > bills.id]
+  name varchar
+  price integer
+  quantity integer
+  comment varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table payment_methods {
+  id integer [primary key]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table payments {
+  id integer [primary key]
+  bill_id integer [ref: > bills.id]
+  payment_method varchar [ref: > payment_methods.name]
+  amount integer
+  comment varchar
+  created_at timestamp
+  updated_at timestamp
+}

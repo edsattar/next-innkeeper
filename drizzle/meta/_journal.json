@@ -1,0 +1,55 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1693934484605,
+      "tag": "0000_lazy_nomad",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1693980898715,
+      "tag": "0001_magenta_komodo",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1694020974386,
+      "tag": "0002_hesitant_infant_terrible",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1694065048414,
+      "tag": "0003_curvy_harpoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1694099390257,
+      "tag": "0004_overjoyed_wendigo",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1694121297187,
+      "tag": "0005_brief_kid_colt",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1694121564817,
+      "tag": "0006_last_sentry",
+      "breakpoints": true
+    }
+  ]
+}

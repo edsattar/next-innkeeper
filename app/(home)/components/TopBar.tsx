@@ -7,7 +7,7 @@ import { format, utcToZonedTime } from "date-fns-tz";
 
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 
-import { playfair } from "@/fonts";
+import { playfair } from "@/styles/fonts";
 
 const TopBar = () => {
   const [date, setDate] = useState(new Date());
