@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, ChevronsUpDownIcon, CheckIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ import { Input } from "@ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { toast } from "@ui/use-toast";
 
-import CommandField from "./CommandField";
+import { ComboBoxField, TextInputField, NumberInputField } from "./CustomFormFields";
 
 import { CountriesListType } from "@/db";
 import { reservation_sources, reservation_status } from "@/db/schema";
@@ -26,13 +26,20 @@ const formSchema = z.object({
   id: z.coerce.number().positive(),
   room_id: z.coerce.number().positive(),
   guest_name: z.string().min(2, { message: "( min 2 characters. )" }).max(30, { message: "Name must not be longer than 30 characters." }).nullable(),
-  country: z.string().nullable(),
+  phone: z.string().min(11, { message: "( min 11 characters. )" }).max(14, { message: "Phone must not be longer than 14 characters." }).optional(),
+  email: z.string().email().optional(),
+  country: z.string().optional(),
+  id_card_type: z.string().optional(),
+  id_card_number: z.string().optional(),
   room_rate: z.coerce.number(),
   check_in: z.date(),
   check_out: z.date(),
-  status: z.enum(reservation_status.enumValues),
-  source: z.enum(reservation_sources.enumValues),
+  status: z.string(),
+  source: z.string(),
 });
+
+const reservation_status_list = reservation_status.enumValues.map((value) => ({ label: value }));
+const reservation_sources_list = reservation_sources.enumValues.map((value) => ({ label: value }));
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -51,6 +58,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
     id: last_rid + 1,
     // room_id: "",
     // guest_name: "",
+    // phone: "",
     // country: "BD",
     room_rate: 3000,
     check_in: new Date(),
@@ -63,7 +71,9 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
   const onSubmit = async (values: FormValues) => {
     try {
       if (initialData) {
-        await axios.patch(`/api/reservation/${params.rid}`, values);
+        await axios.patch(`/api/reservation`, values);
+      } else {
+        await axios.post(`/api/reservation`, values);
       }
       router.refresh();
       router.push("/staff/reservations");
@@ -75,17 +85,18 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-          <p>{values.check_in.toISOString()}</p>
+          <p>{JSON.stringify(reservation_status_list)}</p>
         </pre>
       ),
     });
-  }
+  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-[1280px] space-y-8">
-        <div className="relative flex justify-between space-x-8 sm:space-x-12">
-          <FormField
+        <div className="flex justify-between space-x-8 sm:space-x-12">
+          <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
+          {/* <FormField
             control={form.control}
             name="id"
             render={({ field }) => (
@@ -99,7 +110,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
                 </FormControl>
               </FormItem>
             )}
-          />
+          /> */}
           <FormField
             control={form.control}
             name="room_id"
@@ -144,7 +155,8 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
               </FormItem>
             )}
           />
-          <FormField
+          <NumberInputField form={form} name="room_rate" label="Room Rate" placeholder="Rate..." />
+          {/* <FormField
             control={form.control}
             name="room_rate"
             render={({ field }) => (
@@ -158,7 +170,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
                 </FormControl>
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         <div className="flex justify-between space-x-8 sm:space-x-12">
@@ -229,115 +241,16 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
         </div>
 
         <div className="flex justify-between space-x-8 sm:space-x-12">
-          <FormField
-            control={form.control}
-            name="source"
-            render={({ field }) => (
-              <FormItem className="flex w-[40vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Source</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                        {field.value ? field.value : <span>Sources...</span>}
-                        <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="min-h-[120px] w-[40vw] p-0" align="center">
-                    <Command>
-                      <CommandInput placeholder="Search" />
-                      <CommandList>
-                        <CommandEmpty>Not found</CommandEmpty>
-                        <CommandGroup>
-                          {reservation_sources.enumValues.map((e) => (
-                            <CommandItem
-                              value={String(e)}
-                              key={e}
-                              onSelect={() => {
-                                form.setValue("source", e);
-                              }}
-                            >
-                              <CheckIcon className={cn("mr-2 h-4 w-4", e === field.value ? "opacity-100" : "opacity-0")} />
-                              {e}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem className="flex w-[40vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Status</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                        {field.value ? field.value : <span>Status...</span>}
-                        <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="min-h-[120px] w-[40vw] p-0" align="center">
-                    <Command>
-                      <CommandInput placeholder="Search" />
-                      <CommandList>
-                        <CommandEmpty>Not found</CommandEmpty>
-                        <CommandGroup>
-                          {reservation_status.enumValues.map((e) => (
-                            <CommandItem
-                              value={String(e)}
-                              key={e}
-                              onSelect={() => {
-                                form.setValue("status", e);
-                              }}
-                            >
-                              <CheckIcon className={cn("mr-2 h-4 w-4", e === field.value ? "opacity-100" : "opacity-0")} />
-                              {e}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
+          <ComboBoxField form={form} name="source" label="Source" placeholder="Source" list={reservation_sources_list} />
+          {/* <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={reservation_status.enumValues} /> */}
         </div>
-        <FormField
-          control={form.control}
-          name="guest_name"
-          render={({ field }) => (
-            <FormItem>
-              <div className="ml-1 flex items-center space-x-2">
-                <FormLabel>Guest Name</FormLabel>
-                <FormMessage />
-              </div>
-              <FormControl>
-                <Input
-                  className="border-0 bg-secondary dark:bg-black/40"
-                  placeholder="Name"
-                  {...field}
-                  value={field.value || ""} // fix for zod error
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        {/* Customer Form */}
+        <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
+        <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
+        <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
+        <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
+        <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
+
         <FormField
           control={form.control}
           name="country"
@@ -351,7 +264,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button variant="secondary" role="combobox" className={cn("w-[240px] justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                      {field.value ? countries.find((country) => country.iso === field.value)?.name : <span>Select a country</span>}
+                      {field.value ? countries.find((item) => item.iso === field.value)?.name : <span>Select a country</span>}
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -362,16 +275,16 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
                     <CommandList>
                       <CommandEmpty>Not found</CommandEmpty>
                       <CommandGroup>
-                        {countries.map((country) => (
+                        {countries.map((item) => (
                           <CommandItem
-                            value={country.name}
-                            key={country.iso}
+                            value={item.name}
+                            key={item.iso}
                             onSelect={() => {
-                              form.setValue("country", country.iso);
+                              form.setValue("country", item.iso);
                             }}
                           >
-                            <CheckIcon className={cn("mr-2 h-4 w-4", country.iso === field.value ? "opacity-100" : "opacity-0")} />
-                            {country.name}
+                            <CheckIcon className={cn("mr-2 h-4 w-4", item.iso === field.value ? "opacity-100" : "opacity-0")} />
+                            {item.name}
                           </CommandItem>
                         ))}
                       </CommandGroup>

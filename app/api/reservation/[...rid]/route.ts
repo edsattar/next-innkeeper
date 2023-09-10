@@ -7,7 +7,7 @@ import * as s from "@/db/schema";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { rid: string } }
+  { params }: { params: { rid: number } }
 ) {
   try {
     const session = await getServerSession(options);
@@ -19,7 +19,6 @@ export async function PATCH(
     }
     // console.log("[RESERVATION_PATCH]", body, params.rid, session.user.role);
 
-    // const reservations =
     await db.update(s.reservations)  
     .set({
       room_id: body.room_id,
@@ -30,8 +29,7 @@ export async function PATCH(
       source: body.source,
       updated_at: new Date(),
     })
-    .where(eq(s.reservations.id, body.id))
-    // .returning({ updatedAt: s.reservations.updated_at });
+    .where(eq(s.reservations.id, params.rid))
 
     return NextResponse.json({msg: "ok"});
   } catch (error) {
