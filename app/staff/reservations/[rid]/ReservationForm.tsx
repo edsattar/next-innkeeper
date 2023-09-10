@@ -93,6 +93,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
           <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
         </div>
+
         <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
           <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
