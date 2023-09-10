@@ -45,10 +45,6 @@ export const get_reservations_list = () => db
 
 export type ReservationType = typeof s.reservations.$inferSelect 
 export type CustomerType = typeof s.customers.$inferSelect
-// combine the two types
-
-
-
 
 export const update_reservation = async (data: ReservationType) => {
   await db
@@ -66,8 +62,8 @@ export const update_reservation = async (data: ReservationType) => {
 
 export const countries_list = db
   .select({
-    iso: s.countries.iso,
-    name: s.countries.name,
+    id: s.countries.iso,
+    label: s.countries.name,
   })
   .from(s.countries);
 export type CountriesListType = typeof countries_list._.result;
@@ -76,5 +72,5 @@ export const get_last_rid = db
   .select({ id: sql<number>`max(${s.reservations.id})` })
   .from(s.reservations);
 
-export const get_rooms_list = db.select({id: s.rooms.id}).from(s.rooms);
+export const get_rooms_list = db.select({label: s.rooms.id}).from(s.rooms);
 export type RoomsListType = typeof get_rooms_list._.result;

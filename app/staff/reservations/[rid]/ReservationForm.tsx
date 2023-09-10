@@ -1,23 +1,16 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, ChevronsUpDownIcon, CheckIcon } from "lucide-react";
-import { format } from "date-fns";
-import { UseFormReturn, useForm } from "react-hook-form";
-import { z } from "zod";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@ui/button";
-import { Calendar } from "@ui/calendar";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@ui/command";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
-import { Input } from "@ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
+import { Form } from "@ui/form";
 import { toast } from "@ui/use-toast";
 
-import { ComboBoxField, TextInputField, NumberInputField } from "./CustomFormFields";
+import { ComboBoxField, TextInputField, NumberInputField, DateInputField } from "./CustomFormFields";
 
 import { CountriesListType } from "@/db";
 import { reservation_sources, reservation_status } from "@/db/schema";
@@ -41,13 +34,11 @@ const formSchema = z.object({
 const reservation_status_list = reservation_status.enumValues.map((value) => ({ label: value }));
 const reservation_sources_list = reservation_sources.enumValues.map((value) => ({ label: value }));
 
-type FormValues = z.infer<typeof formSchema>;
-
 interface Props {
   countries: CountriesListType;
   initialData: any;
   last_rid: number;
-  room_list: { id: number }[];
+  room_list: { label: number }[];
 }
 
 export function ReservationForm({ initialData, countries, last_rid, room_list }: Props) {
@@ -56,13 +47,12 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
 
   const defaultValues = initialData || {
     id: last_rid + 1,
-    // room_id: "",
-    // guest_name: "",
-    // phone: "",
-    // country: "BD",
     room_rate: 3000,
     check_in: new Date(),
   };
+
+  type FormValues = z.infer<typeof formSchema>;
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -93,208 +83,29 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-[1280px] space-y-8">
-        <div className="flex justify-between space-x-8 sm:space-x-12">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col items-center space-y-8">
+        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
-          {/* <FormField
-            control={form.control}
-            name="id"
-            render={({ field }) => (
-              <FormItem className="flex w-[25vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>RID</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Input className="min-w-[60px] border-0 bg-secondary dark:bg-black/40" placeholder="Reservation ID" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          /> */}
-          <FormField
-            control={form.control}
-            name="room_id"
-            render={({ field }) => (
-              <FormItem className="flex w-[25vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Room</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant="secondary" role="combobox" className={cn(" justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                        {field.value ? field.value : <span>Rooms...</span>}
-                        <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="min-h-[120px] w-[25vw] p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Search" />
-                      <CommandList>
-                        <CommandEmpty>Not found</CommandEmpty>
-                        <CommandGroup>
-                          {room_list.map((room) => (
-                            <CommandItem
-                              value={String(room.id)}
-                              key={room.id}
-                              onSelect={() => {
-                                form.setValue("room_id", room.id);
-                              }}
-                            >
-                              <CheckIcon className={cn("mr-2 h-4 w-4", room.id === field.value ? "opacity-100" : "opacity-0")} />
-                              {room.id}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
-          <NumberInputField form={form} name="room_rate" label="Room Rate" placeholder="Rate..." />
-          {/* <FormField
-            control={form.control}
-            name="room_rate"
-            render={({ field }) => (
-              <FormItem className="flex w-[25vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Room Rate</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Input className="min-w-[60px] border-0 bg-secondary dark:bg-black/40" placeholder="Room Rate" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          /> */}
+          <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
+          <NumberInputField form={form} name="room_rate" label="Rate" placeholder="Rate..." />
         </div>
-
-        <div className="flex justify-between space-x-8 sm:space-x-12">
-          <FormField
-            control={form.control}
-            name="check_in"
-            render={({ field }) => (
-              <FormItem className="flex w-[40vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Check In</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant="secondary" className={cn("min-w-[160px] border-0 bg-secondary dark:bg-black/40", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                        {field.value ? format(field.value, "d MMM yyyy") : <span>Pick a date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="p-1" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => {
-                        return date.getTime() < new Date().getTime() - 7 * 24 * 60 * 60 * 1000;
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="check_out"
-            render={({ field }) => (
-              <FormItem className="flex w-[40vw] flex-col">
-                <div className="ml-1 flex items-center space-x-2">
-                  <FormLabel>Check Out</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button variant="secondary" className={cn("min-w-[160px] justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                        {field.value ? format(field.value, "d MMM yyyy") : <span>Pick a Date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="p-1" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date.getTime() < new Date().getTime() - 7 * 24 * 60 * 60 * 1000}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
+        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
+          <DateInputField form={form} name="check_in" label="Check In" disabled={(date) => date.getTime() < new Date().getTime() - 14 * 24 * 60 * 60 * 1000} />
+          <DateInputField form={form} name="check_out" label="Check Out" disabled={(date) => date < form.getValues("check_in")} />
         </div>
-
-        <div className="flex justify-between space-x-8 sm:space-x-12">
+        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <ComboBoxField form={form} name="source" label="Source" placeholder="Source" list={reservation_sources_list} />
-          {/* <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={reservation_status.enumValues} /> */}
+          <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={reservation_status_list} />
         </div>
         {/* Customer Form */}
-        <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
-        <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
-        <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
-        <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
-        <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
-
-        <FormField
-          control={form.control}
-          name="country"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <div className="ml-1 flex items-center space-x-2">
-                <FormLabel>Country</FormLabel>
-                <FormMessage />
-              </div>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button variant="secondary" role="combobox" className={cn("w-[240px] justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                      {field.value ? countries.find((item) => item.iso === field.value)?.name : <span>Select a country</span>}
-                      <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="min-h-[120px] w-[250px] p-0" align="center">
-                  <Command>
-                    <CommandInput placeholder="Search country..." />
-                    <CommandList>
-                      <CommandEmpty>Not found</CommandEmpty>
-                      <CommandGroup>
-                        {countries.map((item) => (
-                          <CommandItem
-                            value={item.name}
-                            key={item.iso}
-                            onSelect={() => {
-                              form.setValue("country", item.iso);
-                            }}
-                          >
-                            <CheckIcon className={cn("mr-2 h-4 w-4", item.iso === field.value ? "opacity-100" : "opacity-0")} />
-                            {item.name}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </FormItem>
-          )}
-        />
+        <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 sm:gap-x-12">
+          <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
+          <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
+          <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
+          <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
+          <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
+          <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
+        </div>
         <Button type="submit">{initialData ? "Update" : "Create"}</Button>
       </form>
     </Form>

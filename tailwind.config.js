@@ -49,7 +49,7 @@ module.exports = {
           fore: stone[100],
         },
         secondary: {
-          DEFAULT: stone[300],
+          DEFAULT: stone[200],
           foreground: lime[950],
           dark: lime[900],
         },
@@ -68,11 +68,13 @@ module.exports = {
         },
         accent: {
           DEFAULT: "#b6caaf",
+          dark: stone[700],
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
+          DEFAULT: stone[100],
           foreground: "hsl(var(--popover-foreground))",
+          fore: { DEFAULT: lime[950], dark: stone[100] },
           dark: lime[950],
         },
         card: {
