@@ -15,7 +15,7 @@ const Page = async ({ params }: Props) => {
   const room_list = await get_rooms_list;
 
   const formProps = {
-    initialdata: data[0],
+    initialData: data[0],
     countries: countries,
     last_rid: last_rid[0].id,
     room_list: room_list,

@@ -7,25 +7,37 @@ import { format } from "date-fns";
 
 import FlagIcon from "@/components/FlagIcon";
 
-import { ReservationsListItemType } from "@/db";
 import { Button } from "@/components/ui/button";
 import { EditIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const EditButton = ({id}: {id: number}) => {
+const EditButton = ({ id }: { id: number }) => {
   const router = useRouter();
   return (
     <Button
-    onClick={() => router.push(`/staff/reservations/${id}`)}
-    className="group w-12 p-1 "
-  >
-    <EditIcon className="hidden group-hover:flex" size={20} />
-    <p className="w-5 group-hover:hidden">{id}</p>
-  </Button>
+      variant="link"
+      onClick={() => router.push(`/staff/reservations/${id}`)}
+      className="group hover:bg-transparent bg-transparent w-12 h-8 p-0 -ml-3 -mr-2 text-fore dark:text-fore-dark"
+    >
+      <EditIcon className="hidden group-hover:flex" size={20} />
+      <p className="group-hover:hidden underline">{id}</p>
+    </Button>
   );
 }
 
-export const reservations_list_columns: ColumnDef<ReservationsListItemType>[] =
+type ReservationRow = {
+  id: number;
+  room_id: number;
+  guest_name: string | null;
+  country: string | null;
+  room_rate: number;
+  check_in: Date;
+  check_out: Date;
+  status: "booked" | "checked_in" | "checked_out" | "cancelled";
+  source: "booking.com"| "expedia.com"| "corporate"| "walk_in"| "phone"| "email"| "other";
+}
+
+export const reservations_list_columns: ColumnDef<ReservationRow>[] =
   [
     {
       accessorKey: "id",
@@ -85,8 +97,8 @@ export const reservations_list_columns: ColumnDef<ReservationsListItemType>[] =
               val === "expedia.com"
                 ? "bg-yellow-600/70"
                 : val === "booking.com"
-                ? "bg-blue-600/70"
-                : "bg-muted dark:bg-muted-dark",
+                  ? "bg-blue-600/70"
+                  : "bg-muted dark:bg-muted-dark",
             )}
           >
             {row.getValue("source")}

@@ -33,7 +33,7 @@ export const options: NextAuthOptions = {
     }),
   ],
   session: {
-    maxAge: 1 * 60,
+    maxAge: 10 * 60,
   },
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role

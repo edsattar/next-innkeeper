@@ -5,6 +5,8 @@ import { CalendarIcon, ChevronsUpDownIcon, CheckIcon } from "lucide-react";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@ui/button";
@@ -17,7 +19,7 @@ import { toast } from "@ui/use-toast";
 
 import CommandField from "./CommandField";
 
-import { ReservationsListItemType, CountriesListType } from "@/db";
+import { CountriesListType } from "@/db";
 import { reservation_sources, reservation_status } from "@/db/schema";
 
 const formSchema = z.object({
@@ -28,21 +30,24 @@ const formSchema = z.object({
   room_rate: z.coerce.number(),
   check_in: z.date(),
   check_out: z.date(),
-  status: z.string().optional(),
-  source: z.string().optional(),
+  status: z.enum(reservation_status.enumValues),
+  source: z.enum(reservation_sources.enumValues),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Props {
   countries: CountriesListType;
-  initialdata: ReservationsListItemType;
+  initialData: any;
   last_rid: number;
   room_list: { id: number }[];
 }
 
-export function ReservationForm({ initialdata, countries, last_rid, room_list }: Props) {
-  const defaultValues = initialdata || {
+export function ReservationForm({ initialData, countries, last_rid, room_list }: Props) {
+  const params = useParams();
+  const router = useRouter();
+
+  const defaultValues = initialData || {
     id: last_rid + 1,
     // room_id: "",
     // guest_name: "",
@@ -55,12 +60,22 @@ export function ReservationForm({ initialdata, countries, last_rid, room_list }:
     defaultValues,
   });
 
-  function onSubmit(values: FormValues) {
+  const onSubmit = async (values: FormValues) => {
+    try {
+      if (initialData) {
+        await axios.patch(`/api/reservation/${params.rid}`, values);
+      }
+      router.refresh();
+      router.push("/staff/reservations");
+    } catch (error: any) {
+      toast({ title: "Something went wrong.", description: error.message });
+    }
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+          <p>{values.check_in.toISOString()}</p>
         </pre>
       ),
     });
@@ -69,7 +84,7 @@ export function ReservationForm({ initialdata, countries, last_rid, room_list }:
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto max-w-[1280px] space-y-8">
-        <div className="relative flex space-x-8 justify-around sm:space-x-12">
+        <div className="relative flex justify-between space-x-8 sm:space-x-12">
           <FormField
             control={form.control}
             name="id"
@@ -146,7 +161,7 @@ export function ReservationForm({ initialdata, countries, last_rid, room_list }:
           />
         </div>
 
-        <div className="flex space-x-8 justify-around sm:space-x-12">
+        <div className="flex justify-between space-x-8 sm:space-x-12">
           <FormField
             control={form.control}
             name="check_in"
@@ -213,7 +228,7 @@ export function ReservationForm({ initialdata, countries, last_rid, room_list }:
           />
         </div>
 
-        <div className="flex space-x-8 justify-around sm:space-x-12">
+        <div className="flex justify-between space-x-8 sm:space-x-12">
           <FormField
             control={form.control}
             name="source"
@@ -367,7 +382,7 @@ export function ReservationForm({ initialdata, countries, last_rid, room_list }:
             </FormItem>
           )}
         />
-        <Button type="submit">{initialdata ? "Update" : "Create"}</Button>
+        <Button type="submit">{initialData ? "Update" : "Create"}</Button>
       </form>
     </Form>
   );

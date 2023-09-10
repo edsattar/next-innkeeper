@@ -1,14 +1,13 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DataTable from "./components/DataTable";
 import { reservations_list_columns } from "./components/Columns";
 
-import { reservations_list } from "@/db";
-import { eq, sql } from "drizzle-orm";
-import { reservations, customers, countries } from "@/db/schema";
-import Link from "next/link";
+import { get_reservations_list } from "@/db";
 
 const Page = async () => {
-  const data = await reservations_list;
+  const data = await get_reservations_list();
+
   return (
     <div>
       <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
