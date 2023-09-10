@@ -4,6 +4,7 @@ import DataTable from "./components/DataTable";
 import { reservations_list_columns } from "./components/Columns";
 
 import { get_reservations_list } from "@/db";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const Page = async () => {
   const data = await get_reservations_list();
@@ -17,9 +18,22 @@ const Page = async () => {
           </div>
           <div className="flex items-center space-x-2">
             {/* <UserNav /> */}
-            <Link href="/staff/reservations/0">
-              <Button>New</Button>
-            </Link>
+            {/* <Link href="/staff/reservations/0"> </Link> */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>New Reservation</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuItem>
+                  <Link href="/staff/reservations/new">
+                    <span>New Customer</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Existing Customer</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
         <DataTable columns={reservations_list_columns} data={data} />

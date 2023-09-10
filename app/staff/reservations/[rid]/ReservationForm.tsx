@@ -84,6 +84,15 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col items-center space-y-8">
+        {/* Customer Form */}
+        <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 sm:gap-x-12">
+          <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
+          <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
+          <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
+          <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
+          <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
+          <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
+        </div>
         <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
           <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
@@ -97,15 +106,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           <ComboBoxField form={form} name="source" label="Source" placeholder="Source" list={reservation_sources_list} />
           <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={reservation_status_list} />
         </div>
-        {/* Customer Form */}
-        <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 sm:gap-x-12">
-          <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
-          <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
-          <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
-          <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
-          <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
-          <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
-        </div>
+
         <Button type="submit">{initialData ? "Update" : "Create"}</Button>
       </form>
     </Form>
