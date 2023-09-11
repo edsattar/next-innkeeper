@@ -14,6 +14,7 @@ import { ComboBoxField, TextInputField, NumberInputField, DateInputField } from 
 
 import { CountriesListType } from "@/db";
 import { reservation_sources, reservation_status } from "@/db/schema";
+import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   id: z.coerce.number().positive(),
@@ -85,6 +86,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col items-center space-y-8">
         {/* Customer Form */}
+        <h2 className="text-lg self-start tracking-tight font-bold pl-0.5">Customer Info</h2>
         <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 sm:gap-x-12">
           <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
           <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
@@ -93,7 +95,9 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
           <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
         </div>
+        <Separator />
 
+        <h2 className="text-lg self-start tracking-tight font-bold pl-0.5">Booking Info</h2>
         <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
           <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
