@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "bill_items" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"bill_id" integer,
 	"name" varchar(100),
-	"price" integer,
+	"price" numeric(10, 2),
 	"quantity" integer,
 	"comment" text,
 	"created_at" timestamp DEFAULT now(),
@@ -43,9 +43,16 @@ CREATE TABLE IF NOT EXISTS "bills" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"reservation_id" integer,
 	"bill_type" "bill_types",
-	"amount" integer,
+	"amount" numeric(10, 2),
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "countries" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar(100) NOT NULL,
+	"iso" varchar(2) NOT NULL,
+	"iso3" varchar(3)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "customers" (
@@ -71,39 +78,35 @@ CREATE TABLE IF NOT EXISTS "payments" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "reservations" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"room_id" integer,
+	"room_id" integer NOT NULL,
 	"customer_id" integer,
-	"room_rate" integer,
-	"check_in" timestamp,
-	"check_out" timestamp,
-	"reservation_source" "reservation_sources",
-	"reservation_status" "reservation_status",
+	"room_rate" integer NOT NULL,
+	"check_in" timestamp DEFAULT now() NOT NULL,
+	"check_out" timestamp NOT NULL,
+	"source" "reservation_sources" DEFAULT 'other' NOT NULL,
+	"status" "reservation_status" NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "room_types" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(25),
-	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now()
+	"name" varchar(25)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "rooms" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"room_type_id" integer,
-	"name" varchar(4),
-	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now()
+	"id" smallint PRIMARY KEY NOT NULL,
+	"room_type_id" smallint
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(200),
-	"role" "role",
-	"password" varchar(100),
+	"name" varchar(200) NOT NULL,
+	"role" "role" DEFAULT 'customer' NOT NULL,
+	"password" varchar(100) NOT NULL,
 	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now()
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "users_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 DO $$ BEGIN

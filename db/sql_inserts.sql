@@ -18,25 +18,14 @@ VALUES
 INSERT INTO
   public.customers(name, nationality)
 VALUES
-  ('Antonio Giovinazzi', 'Italy'),
   ('Carlos Sainz', 'Spain'),
   ('Charles Leclerc', 'Monaco'),
   ('Daniel Riccardo', 'Australia'),
-  ('Esteban Ocon', 'France'),
   ('Fernando Alonso', 'Spain'),
-  ('George Russel', 'UK'),
   ('Kimi Raikkonen', 'Finland'),
-  ('Lance Stroll', 'Canada'),
   ('Lando Norris', 'UK'),
   ('Lewis Hamilton', 'UK'),
   ('Max Verstappen', 'Netherlands'),
-  ('Mick Schumacher', 'Germany'),
-  ('Nicholas Latifi', 'Canada');
-  ('Nikita Mazepin', 'Russia'),
-  ('Pierre Gasly', 'France'),
-  ('Sergio Perez', 'Mexico'),
-  ('Valtteri Bottas', 'Finland'),
-  ('Yuki Tsunoda', 'Japan'),
 
 INSERT INTO
   reservations(
@@ -45,8 +34,8 @@ INSERT INTO
     room_rate,
     check_in,
     check_out,
-    reservation_source,
-    reservation_status
+    source,
+    status
   )
 VALUES 
   (101, 1, 3000, '2023-09-01 12:00', '2023-09-020 12:00', 'expedia.com', 'booked'),
