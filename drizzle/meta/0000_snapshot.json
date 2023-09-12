@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "5d4efce1-c257-4881-8d41-71e4df8458e8",
+  "id": "9a652ad8-90cb-4760-a35f-3a6364c89489",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bill_items": {
@@ -144,21 +144,15 @@
       "name": "countries",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
+        "iso": {
+          "name": "iso",
+          "type": "varchar(2)",
           "primaryKey": true,
           "notNull": true
         },
         "name": {
           "name": "name",
           "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "iso": {
-          "name": "iso",
-          "type": "varchar(2)",
           "primaryKey": false,
           "notNull": true
         },
@@ -194,19 +188,19 @@
           "name": "phone",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "email": {
           "name": "email",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "nationality": {
-          "name": "nationality",
-          "type": "varchar(30)",
+        "country_iso": {
+          "name": "country_iso",
+          "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "id_type": {
           "name": "id_type",
@@ -236,7 +230,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "customers_country_iso_countries_iso_fk": {
+          "name": "customers_country_iso_countries_iso_fk",
+          "tableFrom": "customers",
+          "tableTo": "countries",
+          "columnsFrom": [
+            "country_iso"
+          ],
+          "columnsTo": [
+            "iso"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

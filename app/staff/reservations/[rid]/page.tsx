@@ -1,4 +1,4 @@
-import { reservations_list, countries_list, get_last_rid, get_rooms_list } from "@/db";
+import { reservations_list, get_countries_list, get_last_rid, get_rooms_list } from "@/db";
 import { eq } from "drizzle-orm";
 import { reservations } from "@/db/schema";
 import { Separator } from "@/components/ui/separator";
@@ -10,13 +10,13 @@ interface Props {
 
 const Page = async ({ params }: Props) => {
   const data = typeof params.rid === "number" ? await reservations_list.where(eq(reservations.id, params.rid)) : null;
-  const countries = await countries_list;
+  const countries_list = await get_countries_list;
   const last_rid = await get_last_rid;
   const room_list = await get_rooms_list;
 
   const formProps = {
     initialData: data ? data[0] : null,
-    countries: countries,
+    countries: countries_list,
     last_rid: last_rid[0].id,
     room_list: room_list,
   };

@@ -22,7 +22,7 @@ const formSchema = z.object({
   guest_name: z.string().min(2, { message: "( min 2 characters. )" }).max(30, { message: "Name must not be longer than 30 characters." }).nullable(),
   phone: z.string().min(11, { message: "( min 11 characters. )" }).max(14, { message: "Phone must not be longer than 14 characters." }).optional(),
   email: z.string().email().optional(),
-  country: z.string().optional(),
+  country_iso: z.string().optional(),
   id_card_type: z.string().optional(),
   id_card_number: z.string().optional(),
   room_rate: z.coerce.number(),
@@ -92,7 +92,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
           <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
           <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
-          <ComboBoxField form={form} name="country" label="Country" placeholder="Country" list={countries} />
+          <ComboBoxField form={form} name="country_iso" label="Country" placeholder="Country" list={countries} />
           <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
         </div>
         <Separator />

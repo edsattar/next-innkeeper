@@ -1,16 +1,12 @@
-import {
-  serial,
-  text,
-  timestamp,
-  pgTable,
-  varchar,
-  pgEnum,
-  integer,
-  smallint,
-  decimal,
-} from "drizzle-orm/pg-core";
+import { serial, text, timestamp, pgTable, varchar, pgEnum, integer, smallint, decimal } from "drizzle-orm/pg-core";
 
-export const roleEnum = pgEnum("role", ["admin", "manager", "front", "customer"] );
+export const countries = pgTable("countries", {
+  iso: varchar("iso", { length: 2 }).primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  iso3: varchar("iso3", { length: 3 }),
+});
+
+export const roleEnum = pgEnum("role", ["admin", "manager", "front", "customer"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -37,32 +33,18 @@ export const rooms = pgTable("rooms", {
 export const customers = pgTable("customers", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 30 }),
-  phone: varchar("phone", { length: 30 }),
-  email: varchar("email", { length: 50 }),
-  nationality: varchar("nationality", { length: 30 }),
+  phone: varchar("phone", { length: 30 }).notNull(),
+  email: varchar("email", { length: 50 }).notNull(),
+  country_iso: varchar("country_iso").references(() => countries.iso).notNull(),
   id_card_type: varchar("id_type", { length: 20 }),
   id_card_number: varchar("id_number", { length: 20 }),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
-export const reservation_sources = pgEnum("reservation_sources", [
-  "booking.com",
-  "expedia.com",
-  "corporate",
-  "walk_in",
-  "phone",
-  "email",
-  "other",
-]);
+export const reservation_sources = pgEnum("reservation_sources", ["booking.com", "expedia.com", "corporate", "walk_in", "phone", "email", "other"]);
 
-
-export const reservation_status = pgEnum("reservation_status", [
-  "booked",
-  "checked_in",
-  "checked_out",
-  "cancelled",
-]);
+export const reservation_status = pgEnum("reservation_status", ["booked", "checked_in", "checked_out", "cancelled"]);
 export const reservations = pgTable("reservations", {
   id: serial("id").primaryKey(),
   room_id: integer("room_id")
@@ -80,23 +62,7 @@ export const reservations = pgTable("reservations", {
 
 export type Reservation = typeof reservations.$inferSelect;
 
-// export const reservation_status_histories = pgTable(
-//   "reservation_status_histories",
-//   {
-//     id: serial("id").primaryKey(),
-//     reservation_id: integer("reservation_id").references(() => reservations.id),
-//     status: reservation_status("status"),
-//     created_at: timestamp("created_at").defaultNow(),
-//     updated_at: timestamp("updated_at").defaultNow(),
-//   },
-// );
-
-export const bill_types = pgEnum("bill_types", [
-  "room",
-  "restaurant",
-  "laundry",
-  "other",
-]);
+export const bill_types = pgEnum("bill_types", ["room", "restaurant", "laundry", "other"]);
 
 export const bills = pgTable("bills", {
   id: serial("id").primaryKey(),
@@ -118,17 +84,7 @@ export const bill_items = pgTable("bill_items", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
-export const payment_methods = pgEnum("payment_methods", [
-  "bkash",
-  "rocket",
-  "nagad",
-  "cash",
-  "credit_card",
-  "debit_card",
-  "online_transfer",
-  "expedia",
-  "other",
-]);
+export const payment_methods = pgEnum("payment_methods", ["bkash", "rocket", "nagad", "cash", "credit_card", "debit_card", "online_transfer", "expedia", "other"]);
 
 export const payments = pgTable("payments", {
   id: serial("id").primaryKey(),
@@ -137,11 +93,4 @@ export const payments = pgTable("payments", {
   amount: integer("amount"),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
-});
-
-export const countries = pgTable("countries", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  iso: varchar("iso", { length: 2 }).notNull(),
-  iso3: varchar("iso3", { length: 3 }),
 });

@@ -29,7 +29,7 @@ type ReservationRow = {
   id: number;
   room_id: number;
   guest_name: string | null;
-  country: string | null;
+  country_iso: string | null;
   room_rate: number;
   check_in: Date;
   check_out: Date;
@@ -60,7 +60,7 @@ export const reservations_list_columns: ColumnDef<ReservationRow>[] =
         return (
           <div className="flex items-center gap-2">
             {row.original.guest_name}
-            <FlagIcon code={row.original.country || ""} />
+            <FlagIcon code={row.original.country_iso || ""} />
           </div>
         );
       },

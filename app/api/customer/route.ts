@@ -14,15 +14,14 @@ export async function POST(req: Request) {
     if (!session) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
-    // console.log("[RESERVATION_PATCH]", body, params.rid, session.user.role);
 
-    await db.insert(s.reservations).values({
-      room_id: body.room_id,
-      room_rate: body.room_rate,
-      check_in: new Date(body.check_in),
-      check_out: new Date(body.check_out),
-      status: body.status,
-      source: body.source,
+    await db.insert(s.customers).values({
+      name: body.name,
+      phone: body.phone,
+      email: body.email,
+      country_iso: body.country_iso,
+      id_card_type: body.id_card_type || null,
+      id_card_number: body.id_card_number || null,
     });
 
     return NextResponse.json({ msg: "ok" });
@@ -56,7 +55,7 @@ export async function PATCH(req: Request) {
       })
       .where(eq(s.reservations.id, body.id));
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ msg: "ok" });
   } catch (error) {
     console.log("[RESERVATION_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });

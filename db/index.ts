@@ -16,7 +16,7 @@ export const reservations_list = db
     id: s.reservations.id,
     room_id: s.reservations.room_id,
     guest_name: s.customers.name,
-    country: s.countries.iso,
+    country: s.countries.name,
     room_rate: s.reservations.room_rate,
     check_in: s.reservations.check_in,
     check_out: s.reservations.check_out,
@@ -25,14 +25,14 @@ export const reservations_list = db
   })
   .from(s.reservations)
   .leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id))
-  .leftJoin(s.countries, eq(s.customers.nationality, s.countries.name));
+  .leftJoin(s.countries, eq(s.customers.country_iso, s.countries.iso));
 
 export const get_reservations_list = () => db
 .select({
   id: s.reservations.id,
   room_id: s.reservations.room_id,
   guest_name: s.customers.name,
-  country: s.countries.iso,
+  country_iso: s.customers.country_iso,
   room_rate: s.reservations.room_rate,
   check_in: s.reservations.check_in,
   check_out: s.reservations.check_out,
@@ -40,8 +40,7 @@ export const get_reservations_list = () => db
   source: s.reservations.source,
 })
 .from(s.reservations)
-.leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id))
-.leftJoin(s.countries, eq(s.customers.nationality, s.countries.name));
+.leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id));
 
 export type ReservationType = typeof s.reservations.$inferSelect 
 export type CustomerType = typeof s.customers.$inferSelect
@@ -60,13 +59,13 @@ export const update_reservation = async (data: ReservationType) => {
   .where(eq(s.reservations.id, data.id));
 }
 
-export const countries_list = db
+export const get_countries_list = db
   .select({
     id: s.countries.iso,
     label: s.countries.name,
   })
   .from(s.countries);
-export type CountriesListType = typeof countries_list._.result;
+export type CountriesListType = typeof get_countries_list._.result;
 
 export const get_last_rid = db
   .select({ id: sql<number>`max(${s.reservations.id})` })

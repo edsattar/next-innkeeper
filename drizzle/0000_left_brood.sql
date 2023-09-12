@@ -49,18 +49,17 @@ CREATE TABLE IF NOT EXISTS "bills" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "countries" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"iso" varchar(2) PRIMARY KEY NOT NULL,
 	"name" varchar(100) NOT NULL,
-	"iso" varchar(2) NOT NULL,
 	"iso3" varchar(3)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "customers" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(30),
-	"phone" varchar(30),
-	"email" varchar(50),
-	"nationality" varchar(30),
+	"phone" varchar(30) NOT NULL,
+	"email" varchar(50) NOT NULL,
+	"country_iso" varchar NOT NULL,
 	"id_type" varchar(20),
 	"id_number" varchar(20),
 	"created_at" timestamp DEFAULT now(),
@@ -117,6 +116,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "bills" ADD CONSTRAINT "bills_reservation_id_reservations_id_fk" FOREIGN KEY ("reservation_id") REFERENCES "reservations"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "customers" ADD CONSTRAINT "customers_country_iso_countries_iso_fk" FOREIGN KEY ("country_iso") REFERENCES "countries"("iso") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
