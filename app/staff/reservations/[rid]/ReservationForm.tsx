@@ -99,7 +99,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
 
         <h2 className="text-lg self-start tracking-tight font-bold pl-0.5">Booking Info</h2>
         <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-          <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" />
+          <NumberInputField disabled={initialData} form={form} name="id" label="RID" placeholder="Reservation ID" />
           <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
           <NumberInputField form={form} name="room_rate" label="Rate" placeholder="Rate..." />
         </div>

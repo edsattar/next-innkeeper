@@ -2,25 +2,25 @@ import { format } from "date-fns";
 import { CalendarIcon, CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { number } from "zod";
 
 import { Button } from "@ui/button";
 import { Calendar } from "@ui/calendar";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@ui/command";
 import { Input } from "@ui/input";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
-import { is } from "drizzle-orm";
 
 interface NumberInputFieldProps {
   form: UseFormReturn<any>;
   name: string;
   label: string;
   placeholder: string;
+  disabled?: boolean;
 }
 
-export const NumberInputField = ({ form, name, label, placeholder }: NumberInputFieldProps) => (
+export const NumberInputField = ({ form, name, label, placeholder, disabled=false }: NumberInputFieldProps) => (
   <FormField
+    disabled={disabled}
     control={form.control}
     name={name}
     render={({ field }) => (
