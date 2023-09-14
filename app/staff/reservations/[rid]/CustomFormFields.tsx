@@ -18,7 +18,7 @@ interface NumberInputFieldProps {
   disabled?: boolean;
 }
 
-export const NumberInputField = ({ form, name, label, placeholder, disabled=false }: NumberInputFieldProps) => (
+export const NumberInputField = ({ form, name, label, placeholder, disabled = false }: NumberInputFieldProps) => (
   <FormField
     disabled={disabled}
     control={form.control}
@@ -66,17 +66,20 @@ export const TextInputField = ({ form, name, label, placeholder }: TextInputFiel
   />
 );
 
-interface ComboBoxFieldProps {
+export interface ComboBoxFieldProps {
   form: UseFormReturn<any>;
   name: string;
-  label: string;
+  label?: string;
   placeholder: string;
   list: {
-    id?: string;
+    id?: string | number;
     label: string | number;
   }[];
+  className?: string;
+  onSelect?: any;
 }
-export const ComboBoxField = ({ form, name, label, placeholder, list }: ComboBoxFieldProps) => {
+
+export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=()=>{}, className  }: ComboBoxFieldProps) => {
   const isSelected = (item: (typeof list)[0], value: string) => {
     if (value) {
       return value === item.id || value === item.label;
@@ -89,11 +92,13 @@ export const ComboBoxField = ({ form, name, label, placeholder, list }: ComboBox
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex w-full flex-col">
-          <div className="ml-1 flex items-center space-x-2">
-            <FormLabel>{label}</FormLabel>
-            <FormMessage />
-          </div>
+        <FormItem className={cn("flex w-full flex-col", className)}>
+          {label && (
+            <div className="ml-1 flex items-center space-x-2">
+              <FormLabel>{label}</FormLabel>
+              <FormMessage />
+            </div>
+          )}
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -111,11 +116,12 @@ export const ComboBoxField = ({ form, name, label, placeholder, list }: ComboBox
                   <CommandGroup>
                     {list.map((item, index) => (
                       <CommandItem
-                        className={isSelected(item, field.value) ? "bg-secondary" : ""}
+                        className={isSelected(item, field.value) ? "bg-secondary dark:bg-secondary-dark/70" : ""}
                         key={index}
                         value={String(item.label)}
                         onSelect={() => {
                           form.setValue(name, item.id ? item.id : item.label);
+                          onSelect();
                         }}
                       >
                         <CheckIcon className={cn("mr-2 h-4 w-4 opacity-0", isSelected(item, field.value) && "opacity-100")} />

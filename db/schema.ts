@@ -7,18 +7,15 @@ export const countries = pgTable("countries", {
 });
 
 export const roleEnum = pgEnum("role", ["admin", "manager", "front", "customer"]);
-
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: varchar("username", { length: 200 }).notNull().unique(),
-  role: roleEnum("role").notNull().default("customer"),
   password: varchar("password", { length: 100 }).notNull(),
+  role: roleEnum("role").notNull().default("customer"),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
-
 export type User = typeof users.$inferSelect; // return type when queried
-export type NewUser = typeof users.$inferInsert; // insert type
 
 export const room_types = pgTable("room_types", {
   id: serial("id").primaryKey(),
@@ -32,7 +29,7 @@ export const rooms = pgTable("rooms", {
 
 export const customers = pgTable("customers", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 30 }),
+  name: varchar("name", { length: 30 }).notNull(),
   phone: varchar("phone", { length: 30 }).notNull(),
   email: varchar("email", { length: 50 }).notNull(),
   country_iso: varchar("country_iso").references(() => countries.iso).notNull(),
@@ -41,26 +38,26 @@ export const customers = pgTable("customers", {
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
+export type Customer = typeof customers.$inferSelect;
+export type NewCustomer = typeof customers.$inferInsert;
 
 export const reservation_sources = pgEnum("reservation_sources", ["booking.com", "expedia.com", "corporate", "walk_in", "phone", "email", "other"]);
 
 export const reservation_status = pgEnum("reservation_status", ["booked", "checked_in", "checked_out", "cancelled"]);
 export const reservations = pgTable("reservations", {
   id: serial("id").primaryKey(),
-  room_id: integer("room_id")
-    .notNull()
-    .references(() => rooms.id),
+  room_id: integer("room_id").references(() => rooms.id).notNull(),
   customer_id: integer("customer_id").references(() => customers.id),
   room_rate: integer("room_rate").notNull(),
-  check_in: timestamp("check_in").defaultNow().notNull(),
+  check_in: timestamp("check_in").notNull(),
   check_out: timestamp("check_out").notNull(),
   source: reservation_sources("source").notNull().default("other"),
   status: reservation_status("status").notNull(),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
-
 export type Reservation = typeof reservations.$inferSelect;
+export type NewReservation = typeof reservations.$inferInsert;
 
 export const bill_types = pgEnum("bill_types", ["room", "restaurant", "laundry", "other"]);
 

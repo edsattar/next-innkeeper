@@ -59,8 +59,8 @@ export const reservations_list_columns: ColumnDef<ReservationRow>[] =
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
-            {row.original.guest_name}
             <FlagIcon code={row.original.country_iso || ""} />
+            {row.original.guest_name}
           </div>
         );
       },
