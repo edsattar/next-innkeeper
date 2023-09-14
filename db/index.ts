@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, asc } from "drizzle-orm";
 
 import postgres from "postgres";
 import * as s from "./schema";
@@ -27,20 +27,6 @@ export const reservations_list = db
   .leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id))
   .leftJoin(s.countries, eq(s.customers.country_iso, s.countries.iso));
 
-export const get_reservations_list = () => db
-.select({
-  id: s.reservations.id,
-  room_id: s.reservations.room_id,
-  guest_name: s.customers.name,
-  country_iso: s.customers.country_iso,
-  room_rate: s.reservations.room_rate,
-  check_in: s.reservations.check_in,
-  check_out: s.reservations.check_out,
-  status: s.reservations.status,
-  source: s.reservations.source,
-})
-.from(s.reservations)
-.leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id));
 
 export type ReservationType = typeof s.reservations.$inferSelect 
 export type CustomerType = typeof s.customers.$inferSelect
