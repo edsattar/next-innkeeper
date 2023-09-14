@@ -158,23 +158,25 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
 
         {params.rid != "new" && (
           <>
-            <div className="flex items-center gap-4">
-              <h2 className="self-center pl-0.5 text-lg font-bold tracking-tight">Search Customer</h2>
-              <Select onValueChange={onSearchViaSelect}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Search via" />
-                </SelectTrigger>
-                <SelectContent className="pt-2">
-                  <SelectGroup className="grid">
-                    <SelectItem value="phone">Phone Number</SelectItem>
-                    <SelectItem value="email">Email</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {searchLoading && <PulseLoader size={8} color="#78716c" />}
-              {searchData.length >= 1 && !searchLoading && (
-                <ComboBoxField className="w-52" form={form} name="customer_id" placeholder="Search.." list={searchData} onSelect={() => refreshCustomerData()} />
-              )}
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <h2 className="sm:self-center pl-0.5 text-lg font-bold tracking-tight w-48">Search Customer</h2>
+              <div className="flex w-full gap-4">
+                <Select onValueChange={onSearchViaSelect}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder="Search via" />
+                  </SelectTrigger>
+                  <SelectContent className="pt-2">
+                    <SelectGroup className="grid">
+                      <SelectItem value="phone">Phone</SelectItem>
+                      <SelectItem value="email">Email</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                {searchLoading && <PulseLoader size={8} color="#78716c" />}
+                {searchData.length >= 1 && !searchLoading && (
+                  <ComboBoxField className="w-52" form={form} name="customer_id" placeholder="Search.." list={searchData} onSelect={() => refreshCustomerData()} />
+                )}
+              </div>
             </div>
           </>
         )}

@@ -108,7 +108,7 @@ export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=(
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="min-h-[120px] w-[40vw] max-w-[288px]" align="start">
+            <PopoverContent className="min-h-[120px] sm:w-[40vw] w-[65vw] max-w-[288px]" align="start">
               <Command>
                 <CommandInput placeholder="Search" />
                 <CommandList>

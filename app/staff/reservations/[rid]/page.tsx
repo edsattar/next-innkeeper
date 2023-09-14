@@ -28,12 +28,12 @@ const Page = async ({ params }: Props) => {
   };
 
   if (rid && !formProps.initialData) {
-    redirect("/staff/reservations")
+    redirect("/staff/reservations");
   }
 
   return (
     <div>
-      <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="flex h-full m-auto max-w-7xl flex-col space-y-8 p-8">
         <div className="flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">{formProps.initialData ? "Edit Reservation" : "Create Reservation"}</h2>
