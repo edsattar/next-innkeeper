@@ -10,6 +10,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Input } from "@ui/input";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
+import { is } from "drizzle-orm";
 
 interface NumberInputFieldProps {
   form: UseFormReturn<any>;
@@ -75,52 +76,62 @@ interface ComboBoxFieldProps {
     label: string | number;
   }[];
 }
-export const ComboBoxField = ({ form, name, label, placeholder, list }: ComboBoxFieldProps) => (
-  <FormField
-    control={form.control}
-    name={name}
-    render={({ field }) => (
-      <FormItem className="flex w-full flex-col">
-        <div className="ml-1 flex items-center space-x-2">
-          <FormLabel>{label}</FormLabel>
-          <FormMessage />
-        </div>
-        <Popover>
-          <PopoverTrigger asChild>
-            <FormControl>
-              <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                {field.value ? (list[0].id ? list.find((item) => item.id === field.value)?.label : field.value) : placeholder}
-                <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </FormControl>
-          </PopoverTrigger>
-          <PopoverContent className="min-h-[120px] w-[40vw] max-w-[288px]" align="start">
-            <Command>
-              <CommandInput placeholder="Search" />
-              <CommandList>
-                <CommandEmpty>No Match</CommandEmpty>
-                <CommandGroup>
-                  {list.map((item, index) => (
-                    <CommandItem
-                      key={index}
-                      value={String(item.label)}
-                      onSelect={() => {
-                        form.setValue(name, item.id ? item.id : item.label);
-                      }}
-                    >
-                      <CheckIcon className={cn("mr-2 h-4 w-4", item.id === field.value || item.label === field.value ? "opacity-100" : "opacity-0")} />
-                      {item.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </FormItem>
-    )}
-  />
-);
+export const ComboBoxField = ({ form, name, label, placeholder, list }: ComboBoxFieldProps) => {
+  const isSelected = (item: (typeof list)[0], value: string) => {
+    if (value) {
+      return value === item.id || value === item.label;
+    }
+    return false;
+  };
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="flex w-full flex-col">
+          <div className="ml-1 flex items-center space-x-2">
+            <FormLabel>{label}</FormLabel>
+            <FormMessage />
+          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <FormControl>
+                <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
+                  {field.value ? (list[0].id ? list.find((item) => item.id === field.value)?.label : field.value) : placeholder}
+                  <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="min-h-[120px] w-[40vw] max-w-[288px]" align="start">
+              <Command>
+                <CommandInput placeholder="Search" />
+                <CommandList>
+                  <CommandEmpty>No Match</CommandEmpty>
+                  <CommandGroup>
+                    {list.map((item, index) => (
+                      <CommandItem
+                        className={isSelected(item, field.value) ? "bg-secondary" : ""}
+                        key={index}
+                        value={String(item.label)}
+                        onSelect={() => {
+                          form.setValue(name, item.id ? item.id : item.label);
+                        }}
+                      >
+                        <CheckIcon className={cn("mr-2 h-4 w-4 opacity-0", isSelected(item, field.value) && "opacity-100")} />
+                        {item.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </FormItem>
+      )}
+    />
+  );
+};
 
 interface DateInputFieldProps {
   className?: string;

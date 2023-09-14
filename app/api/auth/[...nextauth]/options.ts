@@ -17,12 +17,12 @@ export const options: NextAuthOptions = {
           const result = await db
             .select({
               id: users.id,
-              name: users.name,
+              name: users.username,
               password: users.password,
               role: users.role,
             })
             .from(users)
-            .where(eq(users.name, credentials.username));
+            .where(eq(users.username, credentials.username));
 
           if (result.length === 1 && result[0].password === credentials.password) {
               return {...result[0], id: result[0].id.toString()};

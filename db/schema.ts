@@ -10,7 +10,7 @@ export const roleEnum = pgEnum("role", ["admin", "manager", "front", "customer"]
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 200 }).notNull().unique(),
+  username: varchar("username", { length: 200 }).notNull().unique(),
   role: roleEnum("role").notNull().default("customer"),
   password: varchar("password", { length: 100 }).notNull(),
   created_at: timestamp("created_at").defaultNow(),
