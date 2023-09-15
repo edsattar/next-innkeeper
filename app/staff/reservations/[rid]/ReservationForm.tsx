@@ -55,8 +55,6 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
             ...initialData,
             id: initialData.customer_id,
             name: initialData.guest_name,
-            // created_at: null,
-            // updated_at: null,
           },
         ]
       : [],
@@ -157,8 +155,8 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
 
         {params.rid != "new" && (
           <>
-            <div className="flex flex-col sm:flex-row items-start gap-4">
-              <h2 className="sm:self-center pl-0.5 text-lg font-bold tracking-tight w-48">Search Customer</h2>
+            <div className="flex flex-col items-start gap-4 sm:flex-row">
+              <h2 className="w-48 pl-0.5 text-lg font-bold tracking-tight sm:self-center">Search Customer</h2>
               <div className="flex w-full gap-4">
                 <Select onValueChange={onSearchViaSelect}>
                   <SelectTrigger className="w-[120px]">
