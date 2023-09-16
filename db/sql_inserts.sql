@@ -1,4 +1,3 @@
-
 INSERT INTO
   countries(iso, iso3, name)
 values
@@ -262,12 +261,12 @@ VALUES
 INSERT INTO
   public.customers(name, country_iso, phone, email)
 VALUES
-  ('Carlos Sainz', 'ES', '123456789', 'carlos.sainz@ferrari.com'),
-  ('Charles Leclerc', 'MC', '123456789', 'charles@ferrari.com'),
-  ('Daniel Riccardo', 'AU', '123456789', 'dannyric@optus.com'),
-  ('Lewis Hamilton', 'GB', '123456789', 'lewis44@mercedes.com'),
-  ('Kimi Raikkonen', 'FI', '123456789', 'iceman@boah.com'),
-  ('Lando Norris', 'GB', '123456789', 'nando@mclaren.com');
+  ('Carlos Sainz', 'ES', '+00000000001', 'carlos.sainz@ferrari.com'),
+  ('Charles Leclerc', 'MC', '+00000000002', 'charles@ferrari.com'),
+  ('Daniel Riccardo', 'AU', '+00000000003', 'dannyric@optus.com'),
+  ('Lewis Hamilton', 'GB', '+00000000004', 'lewis44@mercedes.com'),
+  ('Kimi Raikkonen', 'FI', '+00000000005', 'iceman@boah.com'),
+  ('Lando Norris', 'GB', '+00000000006', 'nando@mclaren.com');
 
 INSERT INTO
   reservations(
@@ -283,3 +282,6 @@ VALUES
   (101, 1, 3000, '2023-09-01 12:00', '2023-09-020 12:00', 'expedia.com', 'booked'),
   (102, 2, 3000, '2023-09-03 12:00', '2023-09-015 12:00', 'booking.com', 'booked'),
   (103, 3, 3000, '2023-09-09 12:00', '2023-09-023 12:00', 'corporate', 'booked');
+
+insert into users(username, password, role)
+values ('dev', 'dev', 'admin');

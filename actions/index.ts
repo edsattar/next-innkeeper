@@ -2,19 +2,16 @@
 import { db } from "@/db";
 import { eq, asc } from "drizzle-orm";
 import * as s from "@/db/schema";
-import { ReservationFormValues } from "@/app/staff/reservations/[rid]/ReservationForm";
 
 export const addReservation = async (data: s.NewReservation) => {
   await db.insert(s.reservations).values({
-    ...data,
-    // TODO
-    // customer_id: data.customer_id,
-    // room_id: data.room_id,
-    // room_rate: data.room_rate,
-    // check_in: data.check_in,
-    // check_out: data.check_out,
-    // status: data.status,
-    // source: data.source,
+    customer_id: data.customer_id,
+    room_id: data.room_id,
+    room_rate: data.room_rate,
+    check_in: data.check_in,
+    check_out: data.check_out,
+    status: data.status,
+    source: data.source,
   });
   return { success: true };
 };
@@ -39,13 +36,12 @@ export const addCustomer = async (data: s.NewCustomer) => {
   const result = await db
     .insert(s.customers)
     .values({
-      ...data,
-      // name: data.name,
-      // phone: data.phone,
-      // email: data.email,
-      // country_iso: data.country_iso,
-      // id_card_type: data.id_card_type,
-      // id_card_number: data.id_card_number,
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      country_iso: data.country_iso,
+      id_card_type: data.id_card_type,
+      id_card_number: data.id_card_number,
     })
     .returning({ insertedId: s.customers.id });
   return { success: true, insert_return: result };
@@ -91,6 +87,8 @@ export const getReservationByID = (reservations_id: number) =>
     .leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id))
     .where(eq(s.reservations.id, reservations_id));
 
+type ReservationByIDType = Awaited<ReturnType<typeof getReservationByID>>
+
 export const getReservationsList = () =>
   db
     .select({
@@ -107,3 +105,5 @@ export const getReservationsList = () =>
     .from(s.reservations)
     .leftJoin(s.customers, eq(s.reservations.customer_id, s.customers.id))
     .orderBy(asc(s.reservations.id));
+
+type ReservationListType = Awaited<ReturnType<typeof getReservationsList>>

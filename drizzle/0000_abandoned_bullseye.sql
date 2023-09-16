@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "countries" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "customers" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(30),
+	"name" varchar(30) NOT NULL,
 	"phone" varchar(30) NOT NULL,
 	"email" varchar(50) NOT NULL,
 	"country_iso" varchar NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS "reservations" (
 	"room_id" integer NOT NULL,
 	"customer_id" integer,
 	"room_rate" integer NOT NULL,
-	"check_in" timestamp DEFAULT now() NOT NULL,
+	"check_in" timestamp NOT NULL,
 	"check_out" timestamp NOT NULL,
 	"source" "reservation_sources" DEFAULT 'other' NOT NULL,
 	"status" "reservation_status" NOT NULL,
@@ -100,12 +100,12 @@ CREATE TABLE IF NOT EXISTS "rooms" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" varchar(200) NOT NULL,
-	"role" "role" DEFAULT 'customer' NOT NULL,
+	"username" varchar(200) NOT NULL,
 	"password" varchar(100) NOT NULL,
+	"role" "role" DEFAULT 'customer' NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "users_name_unique" UNIQUE("name")
+	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
 --> statement-breakpoint
 DO $$ BEGIN

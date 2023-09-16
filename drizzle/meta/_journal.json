@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1694460433036,
-      "tag": "0000_left_brood",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1694598671519,
-      "tag": "0001_sturdy_lorna_dane",
+      "when": 1694770096474,
+      "tag": "0000_abandoned_bullseye",
       "breakpoints": true
     }
   ]

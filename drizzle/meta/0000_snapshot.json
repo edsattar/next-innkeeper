@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "9a652ad8-90cb-4760-a35f-3a6364c89489",
+  "id": "8a8ef777-db10-46cb-a00f-3a29b069a28c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bill_items": {
@@ -182,7 +182,7 @@
           "name": "name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "phone": {
           "name": "phone",
@@ -342,8 +342,7 @@
           "name": "check_in",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         },
         "check_out": {
           "name": "check_out",
@@ -479,9 +478,15 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "username": {
+          "name": "username",
           "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true
         },
@@ -491,12 +496,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'customer'"
-        },
-        "password": {
-          "name": "password",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -517,11 +516,11 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_name_unique": {
-          "name": "users_name_unique",
+        "users_username_unique": {
+          "name": "users_username_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "name"
+            "username"
           ]
         }
       }

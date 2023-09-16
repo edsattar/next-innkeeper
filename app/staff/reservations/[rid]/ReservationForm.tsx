@@ -137,7 +137,8 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col space-y-8">
-        {/* New Customer Form */}
+
+        {/* ----------------------------------- NEW CUSTOMER FORM ----------------------------------- */}
         {params.rid === "new" && (
           <>
             <h2 className="self-start pl-0.5 text-lg font-bold tracking-tight">Customer Info</h2>
@@ -153,6 +154,7 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           </>
         )}
 
+        {/* ----------------------------------- EXISTING CUSTOMER SEARCH ----------------------------------- */}
         {params.rid != "new" && (
           <>
             <div className="flex flex-col items-start gap-4 sm:flex-row">
@@ -178,6 +180,8 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
           </>
         )}
         {customerData.length > 0 && <GuestInfoCard customer_data={customerData[0]} />}
+
+        {/* ----------------------------------- BOOKING INFO SECTION ----------------------------------- */}
         <h2 className="self-start pl-0.5 text-lg font-bold tracking-tight">Booking Info</h2>
         <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
           <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" disabled={initialData} />

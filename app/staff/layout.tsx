@@ -8,7 +8,7 @@ import { MainNav } from "./dash/components/main-nav";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 const navigation = [
-  { name: "Overview", href: "/staff/dash" },
+  { name: "Dash", href: "/staff/dash" },
   { name: "Reservations", href: "/staff/reservations" },
   { name: "Products", href: "/staff/products" },
   { name: "Settings", href: "/staff/settings" },
