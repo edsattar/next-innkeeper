@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import { reservations_list, get_countries_list, get_last_rid, get_rooms_list } from "@/db";
+import { reservations_list,  get_last_rid, get_rooms_list } from "@/db";
 import { eq } from "drizzle-orm";
 import { reservations } from "@/db/schema";
 import { Separator } from "@/components/ui/separator";
 import { ReservationForm } from "./ReservationForm";
 import { Button } from "@/components/ui/button";
-import { getReservationByID } from "@/actions";
+import { getReservationByID, get_countries_list } from "@/actions";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -16,13 +16,13 @@ interface Props {
 const Page = async ({ params }: Props) => {
   const rid = parseInt(params.rid);
   const data = rid ? await getReservationByID(rid) : null;
-  const countries_list = await get_countries_list;
+  const countries_list = await get_countries_list();
   const last_rid = await get_last_rid;
   const room_list = await get_rooms_list;
 
   const formProps = {
     initialData: data && data.length > 0 ? data[0] : null,
-    countries: countries_list,
+    countries_list: countries_list,
     last_rid: last_rid[0].id,
     room_list: room_list,
   };
@@ -32,7 +32,7 @@ const Page = async ({ params }: Props) => {
   }
 
   return (
-    <div>
+    <>
       <div className="flex h-full m-auto max-w-7xl flex-col space-y-8 p-8">
         <div className="flex items-center justify-between space-y-2">
           <div>
@@ -56,7 +56,7 @@ const Page = async ({ params }: Props) => {
         <Separator />
         <ReservationForm {...formProps} />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -21,21 +21,6 @@ const Page = async () => {
             <Link href="/staff/reservations/old">
               <Button>New Reservation</Button>
             </Link>
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button>New Reservation</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuItem>
-                  <Link href="/staff/reservations/new">
-                    <span>New Customer</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Existing Customer</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
           </div>
         </div>
         <DataTable columns={reservations_list_columns} data={data} />

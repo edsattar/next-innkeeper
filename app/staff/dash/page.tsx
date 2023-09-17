@@ -37,9 +37,9 @@ export default async function DashboardPage() {
       <Tabs defaultValue="reservations" className="space-y-4">
         {/* prettier-ignore */}
         <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="reservations">Reservations</TabsTrigger>
-            </TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="reservations">Reservations</TabsTrigger>
+        </TabsList>
         <TabsContent value="overview">
           <OverviewTab />
         </TabsContent>

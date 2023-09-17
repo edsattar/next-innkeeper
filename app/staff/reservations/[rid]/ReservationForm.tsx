@@ -10,16 +10,17 @@ import { Button } from "@ui/button";
 import { Form } from "@ui/form";
 import { toast } from "@ui/use-toast";
 import { Separator } from "@ui/separator";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ComboBoxField, ComboBoxFieldProps, TextInputField, NumberInputField, DateInputField } from "./CustomFormFields";
+import { ComboBoxField, ComboBoxFieldProps, TextInputField, NumberInputField, DateInputField } from "@/components/forms/CustomFormFields";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { CountriesListType } from "@/db";
-import { addCustomer, addReservation, getCustomerByID, getCustomerEmails, getCustomerPhones, updateReservation } from "@/actions";
+import { CountriesListType, addCustomer, addReservation, getCustomerByID, getCustomerEmails, getCustomerPhones, updateReservation } from "@/actions";
 import { Customer, reservation_sources, reservation_status } from "@/db/schema";
 import GuestInfoCard from "./GuestInfoCard";
 import { useState } from "react";
+import CustomerForm from "@/components/forms/CustomerForm";
 
 const formSchema = z.object({
+  // Reservation
   id: z.coerce.number().positive(),
   room_id: z.coerce.number().positive(),
   room_rate: z.coerce.number(),
@@ -28,6 +29,7 @@ const formSchema = z.object({
   status: z.enum(reservation_status.enumValues),
   source: z.enum(reservation_sources.enumValues),
   customer_id: z.coerce.number(),
+  // Customer
   guest_name: z.string().min(2, { message: "( min 2 characters. )" }).max(30, { message: "Name must not be longer than 30 characters." }),
   phone: z.string().min(11, { message: "( min 11 characters. )" }).max(14, { message: "Phone must not be longer than 14 characters." }),
   email: z.string().email(),
@@ -41,22 +43,22 @@ const status_labels = reservation_status.enumValues.map((value) => ({ label: val
 const sources_labels = reservation_sources.enumValues.map((value) => ({ label: value }));
 
 interface Props {
-  countries: CountriesListType;
+  countries_list: CountriesListType;
   initialData?: any;
   last_rid: number;
   room_list: { label: number }[];
 }
 
-export function ReservationForm({ initialData, countries, last_rid, room_list }: Props) {
+export function ReservationForm({ countries_list, initialData, last_rid, room_list }: Props) {
   const [customerData, setCustomerData] = useState<Customer[]>(
     initialData
       ? [
-          {
-            ...initialData,
-            id: initialData.customer_id,
-            name: initialData.guest_name,
-          },
-        ]
+        {
+          ...initialData,
+          id: initialData.customer_id,
+          name: initialData.guest_name,
+        },
+      ]
       : [],
   );
   const [searchData, setSearchData] = useState<ComboBoxFieldProps["list"]>([]);
@@ -78,8 +80,8 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
     phone: `+88017100000${last_rid + 1}`,
     email: `john.doe${last_rid + 1}@example.com`,
     country_iso: "BD",
-    id_card_type: null,
-    id_card_number: null,
+    id_card_type: "Passport",
+    id_card_number: "ABCD1234",
   };
 
   const form = useForm<ReservationFormValues>({
@@ -138,39 +140,21 @@ export function ReservationForm({ initialData, countries, last_rid, room_list }:
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col space-y-8">
 
-        {/* ----------------------------------- NEW CUSTOMER FORM ----------------------------------- */}
-        {params.rid === "new" && (
-          <>
-            <h2 className="self-start pl-0.5 text-lg font-bold tracking-tight">Customer Info</h2>
-            <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 sm:gap-x-12">
-              <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
-              <TextInputField form={form} name="phone" label="Phone" placeholder="+8801710000000" />
-              <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />
-              <TextInputField form={form} name="id_card_type" label="ID Type" placeholder="Passport, NID" />
-              <ComboBoxField form={form} name="country_iso" label="Country" placeholder="Country" list={countries} />
-              <TextInputField form={form} name="id_card_number" label="ID No." placeholder="ABCD1234" />
-            </div>
-            <Separator />
-          </>
-        )}
+        {params.rid === "new" && <CustomerForm {...{ form, countries_list }} />}
 
         {/* ----------------------------------- EXISTING CUSTOMER SEARCH ----------------------------------- */}
         {params.rid != "new" && (
           <>
             <div className="flex flex-col items-start gap-4 sm:flex-row">
               <h2 className="w-48 pl-0.5 text-lg font-bold tracking-tight sm:self-center">Search Customer</h2>
-              <div className="flex w-full gap-4">
-                <Select onValueChange={onSearchViaSelect}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Search via" />
-                  </SelectTrigger>
-                  <SelectContent className="pt-2">
-                    <SelectGroup className="grid">
-                      <SelectItem value="phone">Phone</SelectItem>
-                      <SelectItem value="email">Email</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+              <div className="flex w-full items-center gap-4">
+                <Tabs className="space-y-4" onValueChange={onSearchViaSelect}>
+                  {/* prettier-ignore */}
+                  <TabsList>
+                    <TabsTrigger value="phone">Phone</TabsTrigger>
+                    <TabsTrigger value="email">Email</TabsTrigger>
+                  </TabsList>
+                </Tabs>
                 {searchLoading && <PulseLoader size={8} color="#78716c" />}
                 {searchData.length >= 1 && !searchLoading && (
                   <ComboBoxField className="w-52" form={form} name="customer_id" placeholder="Search.." list={searchData} onSelect={() => refreshCustomerData()} />

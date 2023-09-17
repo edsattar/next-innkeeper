@@ -45,14 +45,6 @@ export const update_reservation = async (data: ReservationType) => {
   .where(eq(s.reservations.id, data.id));
 }
 
-export const get_countries_list = db
-  .select({
-    id: s.countries.iso,
-    label: s.countries.name,
-  })
-  .from(s.countries);
-export type CountriesListType = typeof get_countries_list._.result;
-
 export const get_last_rid = db
   .select({ id: sql<number>`max(${s.reservations.id})` })
   .from(s.reservations);
