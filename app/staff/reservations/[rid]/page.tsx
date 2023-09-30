@@ -33,13 +33,12 @@ const Page = async ({ params }: Props) => {
 
   return (
     <>
-      <div className="flex h-full m-auto max-w-7xl flex-col space-y-8 p-8">
-        <div className="flex items-center justify-between space-y-2">
+      <div className="flex h-full w-full m-auto max-w-7xl flex-col space-y-8 p-8">
+        <div className="flex items-center justify-between space-x-2">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">{formProps.initialData ? "Edit Reservation" : "Create Reservation"}</h2>
+            <h2 className="text-2xl font-bold tracking-tight w-32 sm:w-auto">{formProps.initialData ? "Edit Reservation" : "Create Reservation"}</h2>
           </div>
           <div className="flex items-center space-x-2">
-            {/* <UserNav /> */}
             {params.rid === "old" && (
               <Link href="/staff/reservations/new">
                 <Button>New Guest</Button>
@@ -48,7 +47,7 @@ const Page = async ({ params }: Props) => {
 
             {params.rid === "new" && (
               <Link href="/staff/reservations/old">
-                <Button>Return Guest</Button>
+                <Button>Returning Guest</Button>
               </Link>
             )}
           </div>

@@ -226,7 +226,7 @@ values
 ('UA', 'UKR', 'Ukraine'),
 ('AE', 'ARE', 'United Arab Emirates'),
 ('GB', 'GBR', 'United Kingdom'),
-('US', 'USA', 'United States'),
+('US', 'USA', 'United States Of America'),
 ('UM', NULL, 'United States Minor Outlying Islands'),
 ('UY', 'URY', 'Uruguay'),
 ('UZ', 'UZB', 'Uzbekistan'),
@@ -258,16 +258,18 @@ VALUES
   (401, 4), (402, 4), (403, 2), (404, 1), (405, 1), (406, 2),
   (501, 4), (502, 4), (503, 2), (504, 1), (505, 1), (506, 2);
 
+TRUNCATE TABLE customers RESTART IDENTITY CASCADE;
 INSERT INTO
-  public.customers(name, country_iso, phone, email)
+  customers(name, country_iso, phone, email, id_type, id_number)
 VALUES
-  ('Carlos Sainz', 'ES', '+00000000001', 'carlos.sainz@ferrari.com'),
-  ('Charles Leclerc', 'MC', '+00000000002', 'charles@ferrari.com'),
-  ('Daniel Riccardo', 'AU', '+00000000003', 'dannyric@optus.com'),
-  ('Lewis Hamilton', 'GB', '+00000000004', 'lewis44@mercedes.com'),
-  ('Kimi Raikkonen', 'FI', '+00000000005', 'iceman@boah.com'),
-  ('Lando Norris', 'GB', '+00000000006', 'nando@mclaren.com');
+  ('Carlos Sainz', 'ES', '00000000001', 'carlos.sainz@ferrari.com', 'passport', 'ES1234567890'),
+  ('Charles Leclerc', 'MC', '00000000002', 'charles@ferrari.com', 'passport', 'MC08250BG97'),
+  ('Daniel Riccardo', 'AU', '00000000003', 'dannyric@optus.com', 'passport', 'AU1234567890'),
+  ('Lewis Hamilton', 'GB', '00000000004', 'lewis44@mercedes.com', 'passport', 'GB1234567890'),
+  ('Kimi Raikkonen', 'FI', '00000000005', 'iceman@boah.com', 'passport', 'FI1234567890'),
+  ('Lando Norris', 'GB', '00000000006', 'nando@mclaren.com', 'passport', 'GB1234567890');
 
+TRUNCATE TABLE reservations RESTART IDENTITY CASCADE;
 INSERT INTO
   reservations(
     room_id,

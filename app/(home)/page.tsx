@@ -33,7 +33,7 @@ export default function Home() {
       </div>
       <div className="relative top-0 h-[380px]">
         <Image
-          src="https://lh3.googleusercontent.com/drive-viewer/AITFw-zwXWoIrV4v14A77Il5V1PY9BU7y4i4hT_J5TNczeaiTJPdIp5MldnWsU7SYa5mQOX9dfaZwD-QvRzw_MUHqtHJ7TJPIw=w2880-h1629"
+          src="/building_front.jpg"
           fill
           alt="building_front"
           priority

@@ -12,12 +12,11 @@ const Page = async () => {
   return (
     <div>
       <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
-        <div className="flex items-center justify-between space-y-2">
+        <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Reservations</h2>
           </div>
           <div className="flex items-center space-x-2">
-            {/* <UserNav /> */}
             <Link href="/staff/reservations/old">
               <Button>New Reservation</Button>
             </Link>

@@ -4,7 +4,7 @@ import { eq, asc } from "drizzle-orm";
 import * as s from "@/db/schema";
 
 export const addReservation = async (data: s.NewReservation) => {
-  console.log("addReservation", data);
+  console.log("addReservation", data); // TODO: remove
   await db.insert(s.reservations).values({
     customer_id: data.customer_id,
     room_id: data.room_id,
@@ -31,6 +31,10 @@ export const updateReservation = async (data: s.NewReservation) => {
       updated_at: new Date(),
     })
     .where(eq(s.reservations.id, data.id as number));
+};
+
+export const deleteReservation = async (id: number) => {
+  await db.delete(s.reservations).where(eq(s.reservations.id, id));
 };
 
 export const addCustomer = async (data: s.NewCustomer) => {

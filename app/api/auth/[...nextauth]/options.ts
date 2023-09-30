@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { comparePass } from "@/lib/bcrypt";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -24,8 +25,12 @@ export const options: NextAuthOptions = {
             .from(users)
             .where(eq(users.username, credentials.username));
 
-          if (result.length === 1 && result[0].password === credentials.password) {
-              return {...result[0], id: result[0].id.toString()};
+          if (result[0] && (await comparePass(credentials.password, result[0].password))) {
+            return {
+              id: result[0].id.toString(),
+              name: result[0].name,
+              role: result[0].role,
+            };
           }
         }
         return null;
@@ -33,7 +38,7 @@ export const options: NextAuthOptions = {
     }),
   ],
   session: {
-    maxAge: 10 * 60,
+    maxAge: 30 * 60,
   },
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
