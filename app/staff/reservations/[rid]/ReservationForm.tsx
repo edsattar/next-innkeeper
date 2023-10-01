@@ -88,8 +88,6 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
         }
       : null,
   );
-  const [searchData, setSearchData] = useState(customers_info);
-  const [searchLoading, setSearchLoading] = useState(false);
 
   const params = useParams();
   const router = useRouter();
@@ -134,7 +132,7 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
         await updateReservation(values);
       } else {
         let new_customer_id = values.customer_id;
-        if (params.rid === "new") {
+        if (isNewGuest) {
           let customer = {
             ...values,
             id: undefined,
@@ -209,10 +207,10 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
                         <TabsTrigger value="email">Email</TabsTrigger>
                       </TabsList>
                       <TabsContent value="phone" className="w-full max-w-[300px]">
-                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={searchData} val="phone" onSelect={getCustomerData} />
+                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={customers_info} val="phone" onSelect={getCustomerData} />
                       </TabsContent>
                       <TabsContent value="email" className="w-full max-w-[300px]">
-                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={searchData} val="email" onSelect={getCustomerData} />
+                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={customers_info} val="email" onSelect={getCustomerData} />
                       </TabsContent>
                     </Tabs>
                   </div>
