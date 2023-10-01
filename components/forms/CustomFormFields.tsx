@@ -92,9 +92,9 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
     } else {
       setSelectedValue(form.getValues(name) || placeholder);
     }
-  }, [form]);
+  }, [form, list, name, placeholder, val]);
 
-  const isSelected = (item: (typeof list)[0], value: string) => {
+  const isSelected = (item: { [key: string]: string | number }, value: string) => {
     if (value) {
       return value === item[name];
     }
@@ -117,9 +117,7 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
             <PopoverTrigger asChild>
               <FormControl>
                 <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                  <span className="max-w-[150px] -mr-[10px]  sm:max-w-none overflow-hidden text-ellipsis">
-                  {selectedValue}
-                  </span>
+                  <span className="-mr-[10px] max-w-[150px]  overflow-hidden text-ellipsis sm:max-w-none">{selectedValue}</span>
                   <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
@@ -135,7 +133,7 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
                   <CommandGroup>
                     {list.map((item, index) => (
                       <CommandItem
-                        className={isSelected(item, field.value) ? "bg-secondary dark:bg-secondary-dark/70" : ""}
+                        className={field.value === item[name] ? "bg-secondary dark:bg-secondary-dark/70" : ""}
                         key={index}
                         value={String(item[val || name])}
                         onSelect={() => {
