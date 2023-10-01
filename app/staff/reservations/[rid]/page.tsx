@@ -1,12 +1,9 @@
 import Link from "next/link";
 
-import { reservations_list,  get_last_rid, get_rooms_list } from "@/db";
-import { eq } from "drizzle-orm";
-import { reservations } from "@/db/schema";
 import { Separator } from "@/components/ui/separator";
 import { ReservationForm } from "./ReservationForm";
 import { Button } from "@/components/ui/button";
-import { getReservationByID, get_countries_list } from "@/actions";
+import { getReservationByID, get_countries_list, get_customer_phones, get_customers_info, get_last_RID, get_rooms_list } from "@/actions";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -15,16 +12,24 @@ interface Props {
 
 const Page = async ({ params }: Props) => {
   const rid = parseInt(params.rid);
+
+  // TODO find a better way
+  // if rid is a string, it's either "new" or "old"
+  // if rid is a number, it's a valid reservation id so we can fetch the data
   const data = rid ? await getReservationByID(rid) : null;
   const countries_list = await get_countries_list();
-  const last_rid = await get_last_rid;
-  const room_list = await get_rooms_list;
+  const last_rid = await get_last_RID();
+  const room_list = await get_rooms_list();
+  const customer_phones = await get_customer_phones();
+  const customers_info = await get_customers_info();
 
   const formProps = {
     initialData: data && data.length > 0 ? data[0] : null,
     countries_list: countries_list,
-    last_rid: last_rid[0].id,
+    next_rid: parseInt(last_rid[0].last_value) + 1,
     room_list: room_list,
+    customer_phones: customer_phones,
+    customers_info: customers_info,
   };
 
   if (rid && !formProps.initialData) {

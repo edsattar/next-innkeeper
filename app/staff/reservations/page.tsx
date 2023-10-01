@@ -2,8 +2,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DataTable from "./components/DataTable";
 import { reservations_list_columns } from "./components/Columns";
-
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { getReservationsList } from "@/actions";
 
 const Page = async () => {

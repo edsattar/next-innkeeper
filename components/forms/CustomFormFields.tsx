@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { CalendarIcon, CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
+
 import { cn } from "@/lib/utils";
 
 import { Button } from "@ui/button";
@@ -9,22 +10,24 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Input } from "@ui/input";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
+import { useEffect, useState } from "react";
 
 interface NumberInputFieldProps {
   form: UseFormReturn<any>;
+  className?: string;
   name: string;
   label: string;
   placeholder: string;
   disabled?: boolean;
 }
 
-export const NumberInputField = ({ form, name, label, placeholder, disabled = false }: NumberInputFieldProps) => (
+export const NumberInputField = ({ form, className, name, label, placeholder, disabled = false }: NumberInputFieldProps) => (
   <FormField
     disabled={disabled}
     control={form.control}
     name={name}
     render={({ field }) => (
-      <FormItem className="flex w-[25vw] flex-col">
+      <FormItem className={cn("flex flex-1 flex-col", className)}>
         <div className="ml-1 flex items-center space-x-2">
           <FormLabel>{label}</FormLabel>
           <FormMessage />
@@ -69,20 +72,31 @@ export const TextInputField = ({ form, name, label, placeholder }: TextInputFiel
 export interface ComboBoxFieldProps {
   form: UseFormReturn<any>;
   name: string;
+  val?: string;
   label?: string;
   placeholder: string;
   list: {
-    id?: string | number;
-    label: string | number;
+    [key: string]: string | number;
   }[];
   className?: string;
-  onSelect?: any;
+  onSelect?: () => void;
 }
 
-export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=()=>{}, className  }: ComboBoxFieldProps) => {
+export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSelect = () => {}, className }: ComboBoxFieldProps) => {
+  const [selectedValue, setSelectedValue] = useState<string | number>();
+
+  useEffect(() => {
+    if (val) {
+      const item = list.find((item) => item[name] === form.getValues(name));
+      setSelectedValue(item ? item[val] : placeholder);
+    } else {
+      setSelectedValue(form.getValues(name) || placeholder);
+    }
+  }, [form]);
+
   const isSelected = (item: (typeof list)[0], value: string) => {
     if (value) {
-      return value === item.id || value === item.label;
+      return value === item[name];
     }
     return false;
   };
@@ -92,7 +106,7 @@ export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=(
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn("flex w-full flex-col", className)}>
+        <FormItem className={cn("flex w-full flex-1 flex-col ", className)}>
           {label && (
             <div className="ml-1 flex items-center space-x-2">
               <FormLabel>{label}</FormLabel>
@@ -103,12 +117,17 @@ export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=(
             <PopoverTrigger asChild>
               <FormControl>
                 <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                  {field.value ? (list[0].id ? list.find((item) => item.id === field.value)?.label : field.value) : placeholder}
+                  <span className="max-w-[150px] -mr-[10px]  sm:max-w-none overflow-hidden text-ellipsis">
+                  {selectedValue}
+                  </span>
                   <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="min-h-[120px] sm:w-[40vw] w-[65vw] max-w-[288px]" align="start">
+            <PopoverContent
+              align="start"
+              //  className="min-h-[120px] w-[55vw] max-w-[288px] sm:w-[40vw]"
+            >
               <Command>
                 <CommandInput placeholder="Search" />
                 <CommandList>
@@ -118,14 +137,15 @@ export const ComboBoxField = ({ form, name, label, placeholder, list, onSelect=(
                       <CommandItem
                         className={isSelected(item, field.value) ? "bg-secondary dark:bg-secondary-dark/70" : ""}
                         key={index}
-                        value={String(item.label)}
+                        value={String(item[val || name])}
                         onSelect={() => {
-                          form.setValue(name, item.id ? item.id : item.label);
+                          form.setValue(name, item[name]);
+                          setSelectedValue(item[val || name]);
                           onSelect();
                         }}
                       >
                         <CheckIcon className={cn("mr-2 h-4 w-4 opacity-0", isSelected(item, field.value) && "opacity-100")} />
-                        {item.label}
+                        {item[val || name]}
                       </CommandItem>
                     ))}
                   </CommandGroup>
@@ -161,7 +181,7 @@ export const DateInputField = ({ className, form, name, label, disabled, placeho
         <Popover>
           <PopoverTrigger asChild>
             <FormControl>
-              <Button variant="secondary" className={cn("min-w-[160px] border-0 bg-secondary dark:bg-black/40", !field.value && "text-muted-fore dark:text-muted-fore")}>
+              <Button variant="secondary" className={cn("min-w-[140px] border-0 bg-secondary dark:bg-black/40", !field.value && "text-muted-fore dark:text-muted-fore")}>
                 {field.value ? format(field.value, "d MMM yyyy") : placeholder}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>

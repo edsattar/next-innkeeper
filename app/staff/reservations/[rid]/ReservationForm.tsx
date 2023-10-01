@@ -8,16 +8,28 @@ import PulseLoader from "react-spinners/PulseLoader";
 
 import { Button } from "@ui/button";
 import { Form } from "@ui/form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { toast } from "@ui/use-toast";
-import { ComboBoxField, ComboBoxFieldProps, TextInputField, NumberInputField, DateInputField } from "@/components/forms/CustomFormFields";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ComboBoxField, ComboBoxFieldProps, NumberInputField, DateInputField } from "@/components/forms/CustomFormFields";
 
-import { CountriesListType, addCustomer, addReservation, deleteReservation, getCustomerByID, getCustomerEmails, getCustomerPhones, updateReservation } from "@/actions";
+import {
+  CountriesListType,
+  CustomerPhonesType,
+  CustomersInfoType,
+  addCustomer,
+  addReservation,
+  deleteReservation,
+  getCustomerByID,
+  get_customer_emails,
+  get_customer_phones,
+  updateReservation,
+} from "@/actions";
 import { Customer, reservation_sources, reservation_status } from "@/db/schema";
 import GuestInfoCard from "./GuestInfoCard";
 import { useState } from "react";
 import CustomerForm from "@/components/forms/CustomerForm";
 import { TrashIcon } from "lucide-react";
+import DeleteConfirmDialog from "./DeleteConfirmDialog";
 
 const formSchema = z.object({
   // Reservation
@@ -29,14 +41,15 @@ const formSchema = z.object({
     .positive(),
   room_rate: z.coerce
     .number({
-      invalid_type_error: "Input a positive number.",
+      required_error: "Required",
+      invalid_type_error: "Required",
     })
-    .positive({ message: "Input a positive number." }),
+    .positive({ message: "Invalid" }),
   check_in: z.date(),
   check_out: z.date(),
   status: z.enum(reservation_status.enumValues),
   source: z.enum(reservation_sources.enumValues),
-  customer_id: z.coerce.number(),
+  customer_id: z.coerce.number().optional(),
 
   // Customer
   guest_name: z
@@ -44,12 +57,7 @@ const formSchema = z.object({
     .min(2, { message: "( min 2 letters )" })
     .regex(/^[a-zA-Z]+(\s[a-zA-Z]+)*\s?$/, { message: "Invalid" })
     .max(30, { message: "( max 30 letters )" }),
-  phone: z
-    .string()
-    // .regex(/^(\+?\d{1,4}[\s-])?(?!0+\s+,?$)\d{10}\s*,?$/, { message: "Invalid phone number format" })
-    .regex(/^\d*$/, { message: "Invalid phone number format" })
-    .min(11, { message: "( min 11 digits )" })
-    .max(14, { message: "( max 14 digits )" }),
+  phone: z.string().regex(/^\d*$/, { message: "Invalid phone number format" }).min(11, { message: "( min 11 digits )" }).max(14, { message: "( max 14 digits )" }),
   email: z.string().email(),
   country_iso: z.string(),
   id_card_type: z.string().nullable(),
@@ -57,40 +65,39 @@ const formSchema = z.object({
 });
 export type ReservationFormValues = z.infer<typeof formSchema>;
 
-const status_labels = reservation_status.enumValues.map((value) => ({ label: value }));
-const sources_labels = reservation_sources.enumValues.map((value) => ({ label: value }));
+const status_labels = reservation_status.enumValues.map((value) => ({ status: value }));
+const sources_labels = reservation_sources.enumValues.map((value) => ({ source: value }));
 
 interface Props {
   countries_list: CountriesListType;
   initialData?: any;
-  last_rid: number;
-  room_list: { label: number }[];
+  next_rid: number;
+  room_list: { room_id: number }[];
+  customer_phones: CustomerPhonesType;
+  customers_info: CustomersInfoType;
 }
 
-export function ReservationForm({ countries_list, initialData, last_rid, room_list }: Props) {
-  const [customerData, setCustomerData] = useState<Customer[]>(
+export function ReservationForm({ countries_list, customers_info, initialData, next_rid, room_list }: Props) {
+  const [isNewGuest, setIsNewGuest] = useState(false);
+  const [customerData, setCustomerData] = useState<Customer>(
     initialData
-      ? [
-          {
-            ...initialData,
-            id: initialData.customer_id,
-            name: initialData.guest_name,
-          },
-        ]
-      : [],
+      ? {
+          ...initialData,
+          id: initialData.customer_id,
+          name: initialData.guest_name,
+        }
+      : null,
   );
-  const [searchData, setSearchData] = useState<ComboBoxFieldProps["list"]>([]);
+  const [searchData, setSearchData] = useState(customers_info);
   const [searchLoading, setSearchLoading] = useState(false);
 
   const params = useParams();
   const router = useRouter();
 
-
-
   // TODO: Some of the default values
   // can be removed for production
   let defaultValues = initialData || {
-    id: last_rid + 1,
+    id: next_rid,
     room_id: 101,
     room_rate: 3000,
     check_in: new Date(),
@@ -99,20 +106,22 @@ export function ReservationForm({ countries_list, initialData, last_rid, room_li
     source: "other" as const,
     // customer_id: 1,
     guest_name: "John Doe",
-    phone: `88017100000${last_rid + 1}`,
-    email: `john.doe${last_rid + 1}@example.com`,
-    country_iso: "BD",
+    phone: `88017100000${next_rid}`,
+    email: `john.doe${next_rid}@example.com`,
+    country_iso: "US",
     id_card_type: "Passport",
     id_card_number: "ABCD1234",
   };
+
   if (params.rid === "new") {
     defaultValues = {
-      id: last_rid + 1,
+      id: next_rid + 1,
       check_in: new Date(),
       status: "booked" as const,
-      customer_id: 1,
+      // customer_id: 1,
     };
   }
+
   const form = useForm<ReservationFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -155,15 +164,10 @@ export function ReservationForm({ countries_list, initialData, last_rid, room_li
       ),
     });
   };
-  const refreshCustomerData = async () => {
-    setCustomerData(await getCustomerByID(form.watch("customer_id")));
-  };
 
-  const onSearchViaSelect = async (value: string) => {
-    setSearchLoading(true);
-    if (value === "phone") setSearchData(await getCustomerPhones());
-    if (value === "email") setSearchData(await getCustomerEmails());
-    setSearchLoading(false);
+  const getCustomerData = async () => {
+    let data = await getCustomerByID(form.watch("customer_id") as number);
+    setCustomerData(data[0]);
   };
 
   const onDelete = async () => {
@@ -177,67 +181,88 @@ export function ReservationForm({ countries_list, initialData, last_rid, room_li
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex max-w-[1280px] flex-col space-y-8">
-        {params.rid === "new" && <CustomerForm {...{ form, countries_list }} />}
-
-        {/* ---------- EXISTING CUSTOMER SEARCH ---------- */}
-        {params.rid == "old" && (
-          <>
-            <div className="flex flex-col items-start gap-4 sm:flex-row">
-              <h2 className="w-48 pl-0.5 text-lg font-bold tracking-tight sm:self-center">Search Customer</h2>
-              <div className="flex w-full items-center gap-4">
-                <Tabs onValueChange={onSearchViaSelect}>
-                  <TabsList>
-                    <TabsTrigger value="phone">Phone</TabsTrigger>
-                    <TabsTrigger value="email">Email</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-                {searchLoading && <PulseLoader size={8} color="#78716c" />}
-                {searchData.length >= 1 && !searchLoading && (
-                  <ComboBoxField className="w-52" form={form} name="customer_id" placeholder="Search.." list={searchData} onSelect={() => refreshCustomerData()} />
-                )}
-              </div>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-w-[350px] max-w-[1280px] flex-col gap-y-8">
+          {/* ---------- CUSTOMER SECTION ---------- */}
+          <Tabs
+            defaultValue="returning_guest"
+            onValueChange={async (value) => {
+              setIsNewGuest(value === "new_guest");
+            }}
+          >
+            <TabsList className="mb-4">
+              <TabsTrigger value="returning_guest">Returning Guest</TabsTrigger>
+              <TabsTrigger value="new_guest">New Guest</TabsTrigger>
+            </TabsList>
+            <TabsContent value="new_guest">
+              <CustomerForm {...{ form, countries_list }} />
+            </TabsContent>
+            <TabsContent value="returning_guest">
+              <>
+                <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
+                  <h2 className="my-auto min-w-[150px] pl-0.5 text-lg font-bold tracking-tight">Search Customer</h2>
+                  <div className="flex w-full items-center gap-4">
+                    <Tabs defaultValue="phone" className="flex flex-row items-end gap-4 mb-2 w-full">
+                      <TabsList>
+                        <TabsTrigger value="phone">Phone</TabsTrigger>
+                        <TabsTrigger value="email">Email</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="phone" className="w-full max-w-[300px]">
+                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={searchData} val="phone" onSelect={getCustomerData} />
+                      </TabsContent>
+                      <TabsContent value="email" className="w-full max-w-[300px]">
+                        <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={searchData} val="email" onSelect={getCustomerData} />
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                </div>
+                <div className="pt-4">{customerData && <GuestInfoCard customer_data={customerData} />}</div>
+              </>
+            </TabsContent>
+          </Tabs>
+          {/* ------------- BOOKING INFO SECTION -------------- */}
+          <div className="flex flex-col gap-y-8">
+            {/* Header */}
+            <div className="flex w-full items-center justify-between gap-x-8 sm:gap-x-12">
+              <h2 className="pl-0.5 text-lg font-bold tracking-tight">Booking Info</h2>
+              {params.rid === "new" || params.rid === "old" ? (
+                <Button className="w-[100px] self-center" type="submit">
+                  Create
+                </Button>
+              ) : (
+                <div className="flex gap-4">
+                  <Button className="w-[100px] self-center" type="submit">
+                    Update
+                  </Button>
+                  <DeleteConfirmDialog onConfirm={onDelete}>
+                    <Button variant="destructive" className="w-[48px] sm:w-[100px]">
+                      <span className="hidden sm:inline">Delete</span>
+                      <TrashIcon width={20} className="sm:hidden" />
+                    </Button>
+                  </DeleteConfirmDialog>
+                </div>
+              )}
             </div>
-          </>
-        )}
-        {customerData.length > 0 && <GuestInfoCard customer_data={customerData[0]} />}
-
-        {/* ----------------------------------- BOOKING INFO SECTION ----------------------------------- */}
-        <div className="flex w-full items-center justify-between gap-x-8 sm:gap-x-12">
-          <h2 className="pl-0.5 text-lg font-bold tracking-tight">Booking Info</h2>
-          {isNaN(params.rid as any) ? (
-            <Button className="w-[120px] self-center" type="submit">
-              Create
-            </Button>
-          ) : (
-            <div className="flex gap-4">
-              <Button className="w-[120px] self-center" type="submit">
-                Update
-              </Button>
-              <Button variant={"destructive"} size={"icon"} onClick={onDelete} type="button">
-                <TrashIcon height={20} />
-              </Button>
+            {/* Form Row 1  */}
+            <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
+              <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" disabled={initialData} />
+              <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
+              <NumberInputField form={form} name="room_rate" label="Rate" placeholder="Rate..." />
             </div>
-          )}
-        </div>
-        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-          <NumberInputField form={form} name="id" label="RID" placeholder="Reservation ID" disabled={initialData} />
-          <ComboBoxField form={form} name="room_id" label="Room" placeholder="Room" list={room_list} />
-          <NumberInputField form={form} name="room_rate" label="Rate" placeholder="Rate..." />
-        </div>
-        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-          <DateInputField form={form} name="check_in" label="Check In" disabled={(date) => date.getTime() < new Date().getTime() - 14 * 24 * 60 * 60 * 1000} />
-          <DateInputField form={form} name="check_out" label="Check Out" disabled={(date) => date < form.getValues("check_in")} />
-        </div>
-        <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-          <ComboBoxField form={form} name="source" label="Source" placeholder="Source" list={sources_labels} />
-          <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={status_labels} />
-        </div>
-        {/* <Button className="w-44 self-center" type="submit">
-            {initialData ? "Update Reservation" : "Create Reservation"}
-          </Button> */}
-      </form>
-    </Form>
+            {/* Form Row 3  */}
+            <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
+              <DateInputField form={form} name="check_in" label="Check In" disabled={(date) => date.getTime() < new Date().getTime() - 14 * 24 * 60 * 60 * 1000} />
+              <DateInputField form={form} name="check_out" label="Check Out" disabled={(date) => date < form.getValues("check_in")} />
+            </div>
+            {/* Form Row 3  */}
+            <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
+              <ComboBoxField form={form} name="source" label="Source" placeholder="Source" list={sources_labels} />
+              <ComboBoxField form={form} name="status" label="Status" placeholder="Status" list={status_labels} />
+            </div>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 }
