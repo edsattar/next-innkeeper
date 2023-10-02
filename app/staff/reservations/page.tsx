@@ -15,7 +15,7 @@ const Page = async () => {
             <h2 className="text-2xl font-bold tracking-tight">Reservations</h2>
           </div>
           <div className="flex items-center space-x-2">
-            <Link href="/staff/reservations/old">
+            <Link href="/staff/reservations/new">
               <Button>New Reservation</Button>
             </Link>
           </div>
