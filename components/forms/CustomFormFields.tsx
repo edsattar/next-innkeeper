@@ -178,17 +178,16 @@ export const ComboBoxField = ({
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent
-              align="start"
-            >
+            <PopoverContent align="start">
               <Command>
                 <CommandInput placeholder="Search" />
-                <CommandList>
+                <CommandList className="h-40">
                   <CommandEmpty>No Match</CommandEmpty>
                   <CommandGroup>
                     {list.map((item, index) => (
                       <CommandItem
-                        className={cn("",
+                        className={cn(
+                          "",
                           field.value === item[name] &&
                             "bg-secondary dark:bg-secondary-dark/50",
                         )}
