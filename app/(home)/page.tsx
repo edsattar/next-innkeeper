@@ -33,13 +33,13 @@ export default function Home() {
       </div>
       <div className="relative top-0 h-[380px]">
         <Image
-          src="/building_front.jpg"
+          src="/building_front_bw.webp"
           fill
           alt="building_front"
           priority
           className="object-cover"
         />
-        <div className="absolute inset-x-0 flex h-full flex-col justify-center bg-back-dark/80 text-center text-fore-dark">
+        <div className="absolute inset-x-0 flex h-full flex-col justify-center bg-back-dark/70 text-center text-fore-dark">
           <p className={cn("my-4 text-2xl sm:text-3xl", josefin.className)}>
             Welcome To
           </p>
