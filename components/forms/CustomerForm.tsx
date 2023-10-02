@@ -11,8 +11,7 @@ interface Props {
 const CustomerForm = ({ form, countries_list }: Props) => {
   return (
     <>
-        <h2 className="mt-[22px] w-[200px] pl-0.5 text-lg font-bold tracking-tight">Customer Info</h2>
-      <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 pt-8 sm:gap-x-12">
+      <div className="grid w-full grid-cols-2 gap-x-8 gap-y-8 pt-[24px] sm:gap-x-12">
         <TextInputField form={form} name="guest_name" label="Guest Name" placeholder="Name" />
         <TextInputField form={form} name="phone" label="Phone" placeholder="8801710000000" />
         <TextInputField form={form} name="email" label="Email" placeholder="name@example.com" />

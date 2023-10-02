@@ -6,11 +6,32 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "@ui/button";
 import { Calendar } from "@ui/calendar";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@ui/command";
 import { Input } from "@ui/input";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@ui/form";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/popover";
 import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ui/select";
 
 interface NumberInputFieldProps {
   form: UseFormReturn<any>;
@@ -21,7 +42,14 @@ interface NumberInputFieldProps {
   disabled?: boolean;
 }
 
-export const NumberInputField = ({ form, className, name, label, placeholder, disabled = false }: NumberInputFieldProps) => (
+export const NumberInputField = ({
+  form,
+  className,
+  name,
+  label,
+  placeholder,
+  disabled = false,
+}: NumberInputFieldProps) => (
   <FormField
     disabled={disabled}
     control={form.control}
@@ -33,7 +61,11 @@ export const NumberInputField = ({ form, className, name, label, placeholder, di
           <FormMessage />
         </div>
         <FormControl>
-          <Input className="min-w-[60px] border-0 bg-secondary dark:bg-black/40" placeholder={placeholder} {...field} />
+          <Input
+            className="min-w-[64px] border-0 bg-secondary disabled:cursor-default dark:bg-black/40"
+            placeholder={placeholder}
+            {...field}
+          />
         </FormControl>
       </FormItem>
     )}
@@ -46,7 +78,12 @@ interface TextInputFieldProps {
   label: string;
   placeholder: string;
 }
-export const TextInputField = ({ form, name, label, placeholder }: TextInputFieldProps) => (
+export const TextInputField = ({
+  form,
+  name,
+  label,
+  placeholder,
+}: TextInputFieldProps) => (
   <FormField
     control={form.control}
     name={name}
@@ -82,7 +119,16 @@ export interface ComboBoxFieldProps {
   onSelect?: () => void;
 }
 
-export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSelect = () => {}, className }: ComboBoxFieldProps) => {
+export const ComboBoxField = ({
+  form,
+  name,
+  val,
+  label,
+  placeholder,
+  list,
+  onSelect = () => {},
+  className,
+}: ComboBoxFieldProps) => {
   const [selectedValue, setSelectedValue] = useState<string | number>();
 
   useEffect(() => {
@@ -94,7 +140,10 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
     }
   }, [form, list, name, placeholder, val]);
 
-  const isSelected = (item: { [key: string]: string | number }, value: string) => {
+  const isSelected = (
+    item: { [key: string]: string | number },
+    value: string,
+  ) => {
     if (value) {
       return value === item[name];
     }
@@ -107,24 +156,30 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
       name={name}
       render={({ field }) => (
         <FormItem className={cn("flex w-full flex-1 flex-col ", className)}>
-          {label && (
-            <div className="ml-1 flex items-center space-x-2">
-              <FormLabel>{label}</FormLabel>
-              <FormMessage />
-            </div>
-          )}
+          <div className="ml-1 flex items-center space-x-2">
+            {label && <FormLabel>{label}</FormLabel>}
+            <FormMessage />
+          </div>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button variant="secondary" role="combobox" className={cn("justify-between", !field.value && "text-muted-fore dark:text-muted-fore")}>
-                  <span className="-mr-[10px] max-w-[150px]  overflow-hidden text-ellipsis sm:max-w-none">{selectedValue}</span>
+                <Button
+                  variant="secondary"
+                  role="combobox"
+                  className={cn(
+                    "justify-between",
+                    !field.value && "text-muted-fore dark:text-muted-fore",
+                  )}
+                >
+                  <span className="-mr-[10px] max-w-[150px]  overflow-hidden text-ellipsis sm:max-w-none">
+                    {selectedValue}
+                  </span>
                   <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent
               align="start"
-              //  className="min-h-[120px] w-[55vw] max-w-[288px] sm:w-[40vw]"
             >
               <Command>
                 <CommandInput placeholder="Search" />
@@ -133,16 +188,25 @@ export const ComboBoxField = ({ form, name, val, label, placeholder, list, onSel
                   <CommandGroup>
                     {list.map((item, index) => (
                       <CommandItem
-                        className={field.value === item[name] ? "bg-secondary dark:bg-secondary-dark/70" : ""}
+                        className={cn("",
+                          field.value === item[name] &&
+                            "bg-secondary dark:bg-secondary-dark/50",
+                        )}
                         key={index}
                         value={String(item[val || name])}
                         onSelect={() => {
+                          form.clearErrors(name);
                           form.setValue(name, item[name]);
                           setSelectedValue(item[val || name]);
                           onSelect();
                         }}
                       >
-                        <CheckIcon className={cn("mr-2 h-4 w-4 opacity-0", isSelected(item, field.value) && "opacity-100")} />
+                        <CheckIcon
+                          className={cn(
+                            "mr-2 h-4 w-4 opacity-0",
+                            isSelected(item, field.value) && "opacity-100",
+                          )}
+                        />
                         {item[val || name]}
                       </CommandItem>
                     ))}
@@ -166,7 +230,14 @@ interface DateInputFieldProps {
   disabled: (date: Date) => boolean;
 }
 
-export const DateInputField = ({ className, form, name, label, disabled, placeholder = "Pick a date" }: DateInputFieldProps) => (
+export const DateInputField = ({
+  className,
+  form,
+  name,
+  label,
+  disabled,
+  placeholder = "Pick a date",
+}: DateInputFieldProps) => (
   <FormField
     control={form.control}
     name={name}
@@ -179,7 +250,13 @@ export const DateInputField = ({ className, form, name, label, disabled, placeho
         <Popover>
           <PopoverTrigger asChild>
             <FormControl>
-              <Button variant="secondary" className={cn("min-w-[140px] border-0 bg-secondary dark:bg-black/40", !field.value && "text-muted-fore dark:text-muted-fore")}>
+              <Button
+                variant="secondary"
+                className={cn(
+                  "min-w-[140px] border-0 bg-secondary dark:bg-black/40",
+                  !field.value && "text-muted-fore dark:text-muted-fore",
+                )}
+              >
                 {field.value ? format(field.value, "d MMM yyyy") : placeholder}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
@@ -196,6 +273,127 @@ export const DateInputField = ({ className, form, name, label, disabled, placeho
             />
           </PopoverContent>
         </Popover>
+      </FormItem>
+    )}
+  />
+);
+
+interface SelectFieldProps {
+  form: UseFormReturn<any>;
+  name: string;
+  label: string;
+  placeholder: string;
+  list: {
+    [key: string]: string | number;
+  }[];
+  className?: string;
+}
+export const SelectField = ({
+  form,
+  name,
+  label,
+  placeholder,
+  list,
+  className,
+}: SelectFieldProps) => (
+  <FormField
+    control={form.control}
+    name={name}
+    render={({ field }) => (
+      <FormItem className={cn("flex w-full flex-1 flex-col ")}>
+        <div className="ml-1 flex items-center space-x-2">
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormMessage />
+        </div>
+        <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormControl>
+            <SelectTrigger
+              className={cn(
+                !field.value && "text-muted-fore dark:text-muted-fore",
+              )}
+            >
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent>
+            <div className={cn(className)}>
+              {list.map((item, index) => (
+                <SelectItem
+                  key={index}
+                  value={String(item[name])}
+                  className={
+                    field.value === item[name]
+                      ? "bg-secondary dark:bg-secondary-dark/50"
+                      : ""
+                  }
+                >
+                  {item[name]}
+                </SelectItem>
+              ))}
+            </div>
+          </SelectContent>
+        </Select>
+      </FormItem>
+    )}
+  />
+);
+
+interface SelectGridFieldProps {
+  form: UseFormReturn<any>;
+  name: string;
+  label: string;
+  placeholder: string;
+  list: {
+    [key: string]: string | number;
+  }[];
+  className?: string;
+}
+export const SelectGridField = ({
+  form,
+  name,
+  label,
+  placeholder,
+  list,
+  className,
+}: SelectGridFieldProps) => (
+  <FormField
+    control={form.control}
+    name={name}
+    render={({ field }) => (
+      <FormItem className={cn("flex w-full flex-1 flex-col ")}>
+        <div className="ml-1 flex items-center space-x-2">
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormMessage />
+        </div>
+        <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormControl>
+            <SelectTrigger
+              className={cn(
+                !field.value && "text-muted-fore dark:text-muted-fore",
+              )}
+            >
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent className="w-[172px] md:w-[332px]">
+            <div className="grid w-40 grid-cols-4 gap-1 md:w-80 md:grid-cols-8">
+              {list.map((item, index) => (
+                <SelectItem
+                  indicator={false}
+                  key={index}
+                  value={String(item[name])}
+                  className={cn(
+                    "w-10",
+                    field.value === String(item[name]) &&
+                      "bg-secondary dark:bg-secondary-dark/50",
+                  )}
+                >
+                  <span className="">{item[name]}</span>
+                </SelectItem>
+              ))}
+            </div>
+          </SelectContent>
+        </Select>
       </FormItem>
     )}
   />

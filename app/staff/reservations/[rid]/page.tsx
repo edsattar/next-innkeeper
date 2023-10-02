@@ -43,19 +43,6 @@ const Page = async ({ params }: Props) => {
           <div>
             <h2 className="text-2xl font-bold tracking-tight w-32 sm:w-auto">{formProps.initialData ? "Edit Reservation" : "Create Reservation"}</h2>
           </div>
-          <div className="flex items-center space-x-2">
-            {params.rid === "old" && (
-              <Link href="/staff/reservations/new">
-                <Button>New Guest</Button>
-              </Link>
-            )}
-
-            {params.rid === "new" && (
-              <Link href="/staff/reservations/old">
-                <Button>Returning Guest</Button>
-              </Link>
-            )}
-          </div>
         </div>
         <Separator />
         <ReservationForm {...formProps} />

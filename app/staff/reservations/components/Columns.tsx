@@ -12,9 +12,9 @@ import Link from "next/link";
 
 const EditButton = ({ id }: { id: number }) => {
   return (
-    <Link href={`/staff/reservations/${id}`} className="group flex justify-end bg-transparent text-right text-fore hover:bg-transparent dark:text-fore-dark ">
+    <Link href={`/staff/reservations/${id}`} className="group flex justify-end bg-transparent text-right text-fore hover:bg-transparent dark:text-fore-dark min-w-[20px]">
       <EditIcon className="hidden group-hover:flex" size={20} />
-      <p className="underline group-hover:hidden sm:pr-2">{id}</p>
+      <p className="underline group-hover:hidden sm:pr-2 ">{id}</p>
     </Link>
   );
 };
