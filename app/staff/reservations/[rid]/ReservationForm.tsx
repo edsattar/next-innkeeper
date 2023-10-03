@@ -9,7 +9,13 @@ import { Button } from "@ui/button";
 import { Form } from "@ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { toast } from "@ui/use-toast";
-import { ComboBoxField, NumberInputField, DateInputField, SelectField, SelectGridField } from "@/components/forms/CustomFormFields";
+import {
+  ComboBoxField,
+  NumberInputField,
+  DateInputField,
+  SelectField,
+  SelectGridField,
+} from "@/components/forms/CustomFormFields";
 
 import {
   CountriesListType,
@@ -27,7 +33,13 @@ import { useState } from "react";
 import CustomerForm from "@/components/forms/CustomerForm";
 import { TrashIcon } from "lucide-react";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   // Reservation
@@ -57,7 +69,11 @@ const formSchema = z.object({
     .min(2, { message: "( min 2 letters )" })
     .regex(/^[a-zA-Z]+(\s[a-zA-Z]+)*\s?$/, { message: "Invalid" })
     .max(30, { message: "( max 30 letters )" }),
-  phone: z.string().regex(/^\d*$/, { message: "Invalid phone number format" }).min(11, { message: "( min 11 digits )" }).max(14, { message: "( max 14 digits )" }),
+  phone: z
+    .string()
+    .regex(/^\d*$/, { message: "Invalid phone number format" })
+    .min(11, { message: "( min 11 digits )" })
+    .max(14, { message: "( max 14 digits )" }),
   email: z.string().email(),
   country_iso: z.string(),
   id_card_type: z.string().nullable(),
@@ -65,8 +81,12 @@ const formSchema = z.object({
 });
 export type ReservationFormValues = z.infer<typeof formSchema>;
 
-const status_labels = reservation_status.enumValues.map((value) => ({ status: value }));
-const sources_labels = reservation_sources.enumValues.map((value) => ({ source: value }));
+const status_labels = reservation_status.enumValues.map((value) => ({
+  status: value,
+}));
+const sources_labels = reservation_sources.enumValues.map((value) => ({
+  source: value,
+}));
 
 interface Props {
   countries_list: CountriesListType;
@@ -79,12 +99,20 @@ interface Props {
 
 // ------------- MAIN COMPONENT --------------
 // -------------------------------------------
-export function ReservationForm({ countries_list, customers_info, initialData, next_rid, room_list }: Props) {
+export function ReservationForm({
+  countries_list,
+  customers_info,
+  initialData,
+  next_rid,
+  room_list,
+}: Props) {
   const params = useParams();
   const router = useRouter();
 
   const [isNewGuest, setIsNewGuest] = useState(false);
-  const [customerSearchBy, setCustomerSearchBy] = useState<"phone" | "email">("phone");
+  const [customerSearchBy, setCustomerSearchBy] = useState<"phone" | "email">(
+    "phone",
+  );
   const [customerData, setCustomerData] = useState<Customer | null>(
     initialData
       ? {
@@ -95,8 +123,11 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
       : null,
   );
 
-  let defaultValues = initialData || {
+  let defaultValues = 
+  // initialData || 
+  {
     id: next_rid,
+    room_id: 101,
     check_in: new Date(),
     status: "booked" as const,
     guest_name: "John Doe",
@@ -168,12 +199,17 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex min-w-[350px] max-w-[1280px] flex-col gap-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex min-w-[350px] max-w-[1280px] flex-col gap-y-8"
+        >
           {/* ------------- BOOKING INFO SECTION -------------- */}
           <div className="flex flex-col gap-y-8">
             {/* Header */}
             <div className="flex w-full items-center justify-between gap-x-8 sm:gap-x-12">
-              <h2 className="pl-0.5 text-lg font-bold tracking-tight">Booking Info</h2>
+              <h2 className="pl-0.5 text-lg font-bold tracking-tight">
+                Booking Info
+              </h2>
               {params.rid === "new" || params.rid === "old" ? (
                 <Button className="w-[100px] self-center" type="submit">
                   Create
@@ -184,7 +220,10 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
                     Update
                   </Button>
                   <DeleteConfirmDialog onConfirm={onDelete}>
-                    <Button variant="destructive" className="w-[48px] sm:w-[100px]">
+                    <Button
+                      variant="destructive"
+                      className="w-[48px] sm:w-[100px]"
+                    >
                       <span className="hidden sm:inline">Delete</span>
                       <TrashIcon width={20} className="sm:hidden" />
                     </Button>
@@ -194,25 +233,70 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
             </div>
             {/* Form Row 1  */}
             <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-              <NumberInputField className="flex-grow-0" form={form} name="id" label="RID" placeholder="Reservation ID" />
-              <SelectGridField form={form} name="room_id" label="Room" placeholder="room..." list={room_list} />
-              <NumberInputField form={form} name="room_rate" label="Rate" placeholder="Rate..." />
+              <NumberInputField
+                className="flex-grow-0"
+                form={form}
+                name="id"
+                label="RID"
+                placeholder="ID"
+              />
+              <SelectGridField
+                form={form}
+                name="room_id"
+                label="Room"
+                placeholder="room..."
+                list={room_list}
+              />
+              <NumberInputField
+                form={form}
+                name="room_rate"
+                label="Rate"
+                placeholder="Rate..."
+              />
             </div>
             {/* Form Row 3  */}
             <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-              <DateInputField form={form} name="check_in" label="Check In" disabled={(date) => date.getTime() < new Date().getTime() - 14 * 24 * 60 * 60 * 1000} />
-              <DateInputField form={form} name="check_out" label="Check Out" disabled={(date) => date < form.getValues("check_in")} />
+              <DateInputField
+                form={form}
+                name="check_in"
+                label="Check In"
+                disabled={(date) =>
+                  date.getTime() <
+                  new Date().getTime() - 14 * 24 * 60 * 60 * 1000
+                }
+              />
+              <DateInputField
+                form={form}
+                name="check_out"
+                label="Check Out"
+                disabled={(date) => date < form.getValues("check_in")}
+              />
             </div>
             {/* Form Row 3  */}
             <div className="flex w-full justify-between gap-x-8 sm:gap-x-12">
-              <SelectField form={form} name="source" label="Source" placeholder="source..." list={sources_labels} />
-              <SelectField form={form} name="status" label="Status" placeholder="select status..." list={status_labels} />
+              <SelectField
+                form={form}
+                name="source"
+                label="Source"
+                placeholder="source..."
+                list={sources_labels}
+              />
+              <SelectField
+                form={form}
+                name="status"
+                label="Status"
+                placeholder="select status..."
+                list={status_labels}
+              />
             </div>
           </div>
 
           {/* ---------- CUSTOMER SECTION ---------- */}
 
-          <h2 className="pl-0.5 text-lg font-bold tracking-tight">Customer Info</h2>
+          { params.rid === "new" && (<>
+          <h2 className="pl-0.5 text-lg font-bold tracking-tight">
+            Customer Info
+          </h2>
           <Tabs
             defaultValue="returning_guest"
             onValueChange={async (value) => {
@@ -238,16 +322,22 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
               setIsNewGuest(value === "new_guest");
             }}
           >
-            <div className=""></div>
             <TabsList>
               <TabsTrigger value="returning_guest">Returning Guest</TabsTrigger>
               <TabsTrigger value="new_guest">New Guest</TabsTrigger>
             </TabsList>
             <TabsContent value="returning_guest">
               <div className="flex w-full flex-row items-end gap-x-4">
-                <Select onValueChange={(value) => setCustomerSearchBy(value as "phone" | "email")} defaultValue={customerSearchBy}>
+                <Select
+                  onValueChange={(value) =>
+                    setCustomerSearchBy(value as "phone" | "email")
+                  }
+                  defaultValue={customerSearchBy}
+                >
                   <div className="pt-[16px]">
-                    <h2 className="px-1 py-1.5 text-sm font-medium tracking-tight">Search by</h2>
+                    <h2 className="px-1 py-1.5 text-sm font-medium tracking-tight">
+                      Search by
+                    </h2>
                     <SelectTrigger className="w-[100px] border-none">
                       <SelectValue placeholder="Search by.." />
                     </SelectTrigger>
@@ -263,15 +353,23 @@ export function ReservationForm({ countries_list, customers_info, initialData, n
                 </Select>
 
                 <div className="w-full max-w-[300px]">
-                  <ComboBoxField form={form} name="customer_id" placeholder="Search.." list={customers_info} val={customerSearchBy} onSelect={getCustomerData} />
+                  <ComboBoxField
+                    form={form}
+                    name="customer_id"
+                    placeholder="Search.."
+                    list={customers_info}
+                    val={customerSearchBy}
+                    onSelect={getCustomerData}
+                  />
                 </div>
               </div>
-              <div className="pt-4">{customerData && <GuestInfoCard customer_data={customerData} />}</div>
             </TabsContent>
             <TabsContent value="new_guest">
               <CustomerForm {...{ form, countries_list }} />
             </TabsContent>
           </Tabs>
+          </>)}
+          {/* {customerData && <GuestInfoCard customer_data={customerData} />} */}
         </form>
       </Form>
     </>

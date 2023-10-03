@@ -34,7 +34,7 @@ type ReservationRow = {
 export const reservations_list_columns: ColumnDef<ReservationRow>[] = [
   {
     accessorKey: "id",
-    header: () => <p className="text-right sm:pr-2">RID</p>,
+    header: () => <p className="text-right -mr-[2px] sm:mr-[4px]">RID</p>,
     cell: ({ row }) => <EditButton id={row.getValue("id")} />,
   },
   {

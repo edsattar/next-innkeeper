@@ -319,7 +319,7 @@ export const SelectField = ({
               {list.map((item, index) => (
                 <SelectItem
                   key={index}
-                  value={String(item[name])}
+                  value={item[name] as string}
                   className={
                     field.value === item[name]
                       ? "bg-secondary dark:bg-secondary-dark/50"
@@ -374,20 +374,23 @@ export const SelectGridField = ({
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
           </FormControl>
-          <SelectContent className="w-[172px] md:w-[332px]">
+          <SelectContent
+           className="w-[172px] md:w-[332px]"
+           >
             <div className="grid w-40 grid-cols-4 gap-1 md:w-80 md:grid-cols-8">
               {list.map((item, index) => (
                 <SelectItem
                   indicator={false}
                   key={index}
-                  value={String(item[name])}
+                  value={item[name] as string}
                   className={cn(
                     "w-10",
                     field.value === String(item[name]) &&
                       "bg-secondary dark:bg-secondary-dark/50",
+                      item[name] as number % 100 === 1 && "col-start-1",
                   )}
                 >
-                  <span className="">{item[name]}</span>
+                  {item[name]}
                 </SelectItem>
               ))}
             </div>
