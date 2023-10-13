@@ -36,6 +36,7 @@ export const updateReservation = async (data: s.NewReservation) => {
 };
 
 export const deleteReservation = async (id: number) => {
+  console.log("deleteReservation", id); // TODO: remove
   await db.delete(s.reservations).where(eq(s.reservations.id, id));
 };
 
@@ -129,12 +130,16 @@ export const get_customers_info = () => {
     .from(s.customers);
 };
 
-
 // Others
 
-export const get_countries_list = () => {
-  return db.select({ country_iso: s.countries.iso, name: s.countries.name }).from(s.countries);
-};
+const prep_countries_list = db.select({ country_iso: s.countries.iso, name: s.countries.name }).from(s.countries).prepare("countries_list");
+
+
+export const get_countries_list = () => prep_countries_list.execute()
+
+// export const get_countries_list = () => {
+//   return db.select({ country_iso: s.countries.iso, name: s.countries.name }).from(s.countries);
+// };
 
 export const get_last_RID = (): Promise<{ last_value: string }[]> => {
   return db.execute(sql`SELECT last_value FROM reservations_id_seq`);
@@ -144,6 +149,8 @@ export const get_rooms_list = () => {
   return db.select({ room_id: s.rooms.id }).from(s.rooms);
 };
 
+export type ReservationType = Awaited<ReturnType<typeof getReservationByID>>;
+export type RoomListType = Awaited<ReturnType<typeof get_rooms_list>>;
 export type CountriesListType = Awaited<ReturnType<typeof get_countries_list>>;
 export type CustomerPhonesType = Awaited<ReturnType<typeof get_customer_phones>>;
 export type CustomerEmailsType = Awaited<ReturnType<typeof get_customer_emails>>;

@@ -1,8 +1,8 @@
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-import { AuthProvider, ThemeProvider } from "@/context";
-import { Toaster } from "@ui/toaster"
+import { AuthProvider, ThemeProvider, NextUIProvider } from "@/context";
+import { Toaster } from "@ui/toaster";
 
 import { inter } from "@/styles/fonts";
 
@@ -18,15 +18,17 @@ interface Props {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning={true} className="bg-back text-fore dark:bg-back-dark dark:text-fore-dark">
       {/* prettier-ignore */}
-      <body className={cn("bg-back text-fore dark:bg-back-dark dark:text-fore-dark", inter.className)}>
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="light">
-            <Toaster />
-            {children}
-          </ThemeProvider>
-        </AuthProvider>
+      <body className={inter.className}>
+            <AuthProvider>
+              <ThemeProvider attribute="class" defaultTheme="light">
+                {/* <NextUIProvider> */}
+                <Toaster />
+                {children}
+                {/* </NextUIProvider> */}
+              </ThemeProvider>
+            </AuthProvider>
       </body>
     </html>
   );

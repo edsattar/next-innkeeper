@@ -2,7 +2,6 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
-import { cn } from "@/lib/utils";
 import { inter } from "@/styles/fonts";
 import { MainNav } from "./dash/components/main-nav";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
@@ -21,10 +20,8 @@ interface Props {
 const StaffLayout = async ({ children }: Props) => {
   const session = await getServerSession(options);
 
-  if (!session) {
-    redirect("/api/auth/signin?callbackUrl=/staff/dash");
-  } else if (!["admin", "manager"].includes(session.user.role)) {
-    redirect("/api/auth/signin?callbackUrl=/staff/dash");
+  if (!session || !["admin", "manager"].includes(session.user.role)) {
+    redirect("/api/auth/signin?callbackUrl=/staff/reservations");
   }
 
   return (
@@ -32,11 +29,8 @@ const StaffLayout = async ({ children }: Props) => {
       <div className="flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            {/* <TeamSwitcher /> */}
             <MainNav className="ml-6 mr-5" navigation={navigation} />
             <div className="ml-auto flex items-center space-x-4">
-              {/* <Search /> */}
-              {/* <UserNav /> */}
               <DarkModeToggle />
             </div>
           </div>

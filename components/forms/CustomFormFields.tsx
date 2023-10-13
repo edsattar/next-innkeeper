@@ -116,7 +116,7 @@ export interface ComboBoxFieldProps {
     [key: string]: string | number;
   }[];
   className?: string;
-  onSelect?: () => void;
+  onSelect?: (value: string) => any;
 }
 
 export const ComboBoxField = ({
@@ -192,12 +192,13 @@ export const ComboBoxField = ({
                             "bg-secondary dark:bg-secondary-dark/50",
                         )}
                         key={index}
-                        value={String(item[val || name])}
-                        onSelect={() => {
+                        // value={String(item[val || name])}
+                        value={String(item[name])}
+                        onSelect={(value) => {
                           form.clearErrors(name);
                           form.setValue(name, item[name]);
                           setSelectedValue(item[val || name]);
-                          onSelect();
+                          onSelect(value);
                         }}
                       >
                         <CheckIcon
@@ -364,7 +365,7 @@ export const SelectGridField = ({
           {label && <FormLabel>{label}</FormLabel>}
           <FormMessage />
         </div>
-        <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Select onValueChange={field.onChange} defaultValue={field.value && String(field.value)}>
           <FormControl>
             <SelectTrigger
               className={cn(
@@ -382,7 +383,7 @@ export const SelectGridField = ({
                 <SelectItem
                   indicator={false}
                   key={index}
-                  value={item[name] as string}
+                  value={String(item[name])}
                   className={cn(
                     "w-10",
                     field.value === String(item[name]) &&

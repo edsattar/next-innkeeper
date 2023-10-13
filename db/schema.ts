@@ -47,7 +47,7 @@ export const reservation_status = pgEnum("reservation_status", ["booked", "check
 export const reservations = pgTable("reservations", {
   id: serial("id").primaryKey(),
   room_id: integer("room_id").references(() => rooms.id).notNull(),
-  customer_id: integer("customer_id").references(() => customers.id),
+  customer_id: integer("customer_id").references(() => customers.id).notNull(),
   room_rate: integer("room_rate").notNull(),
   check_in: timestamp("check_in").notNull(),
   check_out: timestamp("check_out").notNull(),
