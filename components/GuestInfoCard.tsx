@@ -44,18 +44,18 @@ const GuestInfoCard = ({ customer_data: data, loading }: Props) => {
           )}
         </div>
       </CardHeader>
-      <CardContent className="grid min-w-max grid-cols-1 gap-y-2 text-fore dark:text-fore-dark sm:grid-cols-2">
+      <CardContent className="grid min-w-max grid-cols-1 gap-y-3 text-fore dark:text-fore-dark sm:grid-cols-2">
         {fields.map((field) => (
           <div key={field.id} className="flex items-center gap-2 sm:flex-col sm:items-start">
             <div className="sm:hidden">{field.icon}</div>
-            <p className="hidden w-24 items-center text-base sm:flex">
+            <p className="hidden w-24 items-center text-sm font-semibold sm:flex">
               <span className="mr-2 w-5">{field.icon}</span>
               {field.label}:
             </p>
             {data ? (
-              <p className="rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark">{field.value}</p>
+              <p className="rounded bg-muted/50 px-2 py-1 text-base dark:bg-muted-dark">{field.value}</p>
             ) : (
-              <Skeleton className={`h-9 w-24 rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark ${!loading && "animate-none"}`} />
+              <Skeleton className={`h-9 w-24 rounded bg-muted/50 px-2 py-1 text-sm dark:bg-muted-dark ${!loading && "animate-none"}`} />
             )}
           </div>
         ))}

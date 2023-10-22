@@ -81,6 +81,18 @@ export const getReservationsList = () => {
     .orderBy(asc(s.reservations.id));
 };
 
+export const get_reservation_bills = (reservations_id: number) => {
+  return db.select({
+    bill_id: s.bills.id,
+    bill_type: s.bills.bill_type,
+    amount: s.bills.amount,
+    
+
+  })
+  .from(s.bills)
+  .where(eq(s.bills.reservation_id, reservations_id))
+}
+
 // Customers
 
 export const addCustomer = async (data: s.NewCustomer) => {
@@ -129,6 +141,9 @@ export const get_customers_info = () => {
     })
     .from(s.customers);
 };
+
+// Bills
+
 
 // Others
 

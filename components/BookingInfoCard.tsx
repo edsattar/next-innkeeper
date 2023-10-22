@@ -46,12 +46,12 @@ const BookingInfoCard = ({ booking_data: data }: Props) => {
           <CardTitle className="text-lg flex gap-2"><Hash />{data.id}</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 sm:grid-cols-3 gap-y-2 text-fore dark:text-fore-dark min-w-max">
+      <CardContent className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 text-fore dark:text-fore-dark min-w-max">
         {fields.map((field) => (
           <div key={field.id} className="flex sm:flex-col items-center sm:items-start gap-2">
             <div className="sm:hidden">{field.icon}</div>
-            <p className="hidden font-semibold sm:flex gap-1 w-max "><span className="w-5">{field.icon}</span> {field.label}:</p>
-            <p className="bg-muted/50 dark:bg-muted-dark rounded py-1 px-2 text-lg">{field.value}</p>
+            <p className="hidden font-semibold text-sm sm:flex gap-1 w-max "><span className="w-5">{field.icon}</span> {field.label}:</p>
+            <p className="bg-muted/50 dark:bg-muted-dark rounded py-1 px-2 text-base">{field.value}</p>
           </div>
         ))}
       </CardContent>

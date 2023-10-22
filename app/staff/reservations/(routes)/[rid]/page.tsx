@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { deleteReservation, getCustomerByID, getReservationByID } from "@/actions";
+import { deleteReservation, getCustomerByID, getReservationByID, getReservationsList} from "@/actions";
+import DataTable from "./components/DataTable";
+import { reservations_list_columns } from "./components/Columns";
 
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -27,6 +29,8 @@ const Page = async ({ params }: Props) => {
   }
 
   const customer_data = await getCustomerByID(reservation_data[0].customer_id);
+  const data = await getReservationsList();
+  // const data2 = 
 
   return (
     <>
@@ -45,6 +49,7 @@ const Page = async ({ params }: Props) => {
           <BookingInfoCard booking_data={reservation_data[0]} />
           <GuestInfoCard customer_data={customer_data[0]} />
         </div>
+        <DataTable columns={reservations_list_columns} data={data} />
       </div>
     </>
   );
