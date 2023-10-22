@@ -41,8 +41,10 @@ const Page = async ({ params }: Props) => {
           </div>
         </div>
         <Separator />
-        <BookingInfoCard booking_data={reservation_data[0]} />
-        <GuestInfoCard customer_data={customer_data[0]} />
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <BookingInfoCard booking_data={reservation_data[0]} />
+          <GuestInfoCard customer_data={customer_data[0]} />
+        </div>
       </div>
     </>
   );

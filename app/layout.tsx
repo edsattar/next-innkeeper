@@ -18,9 +18,9 @@ interface Props {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" suppressHydrationWarning={true} className="bg-back text-fore dark:bg-back-dark dark:text-fore-dark">
+    <html lang="en" suppressHydrationWarning={true} className="bg-background">
       {/* prettier-ignore */}
-      <body className={inter.className}>
+      <body className={cn("bg-back text-fore dark:bg-back-dark dark:text-fore-dark",inter.className)}>
             <AuthProvider>
               <ThemeProvider attribute="class" defaultTheme="light">
                 {/* <NextUIProvider> */}

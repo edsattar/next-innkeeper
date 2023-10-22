@@ -1,4 +1,4 @@
-const {nextui} = require("@nextui-org/react");
+const { nextui } = require("@nextui-org/react");
 const colors = require("tailwindcss/colors");
 const { lime, red, stone } = colors;
 
@@ -25,6 +25,8 @@ module.exports = {
         2: "0 0 100%",
       },
       colors: {
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
         back: {
           DEFAULT: stone[100],
           dark: lime[950],
@@ -42,8 +44,6 @@ module.exports = {
           dark: lime[900],
         },
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: lime[900],
           foreground: stone[100],

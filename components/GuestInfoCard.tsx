@@ -27,7 +27,7 @@ const GuestInfoCard = ({ customer_data: data, loading }: Props) => {
     },
   ];
   return (
-    <Card className="dark:bg-black/40">
+    <Card className="dark:bg-black/40 w-full">
       <CardHeader>
         <div className="flex flex-row items-center gap-4">
           {data ? (
@@ -39,31 +39,23 @@ const GuestInfoCard = ({ customer_data: data, loading }: Props) => {
             <>
               <Skeleton className={`h-7 w-12 ${!loading && "animate-none"}`} />
               <Skeleton className={`h-7 w-16 ${!loading && "animate-none"}`} />
-              <Skeleton className={` rounded-none h-7 w-8 ${!loading && "animate-none"}`} />
+              <Skeleton className={` h-7 w-8 rounded-none ${!loading && "animate-none"}`} />
             </>
           )}
         </div>
       </CardHeader>
-      <CardContent className="grid gap-2 text-fore dark:text-fore-dark sm:grid-cols-2">
+      <CardContent className="grid min-w-max grid-cols-1 gap-y-2 text-fore dark:text-fore-dark sm:grid-cols-2">
         {fields.map((field) => (
-          <div
-            key={field.id}
-            className="flex items-center gap-2 sm:flex-col sm:items-start"
-          >
+          <div key={field.id} className="flex items-center gap-2 sm:flex-col sm:items-start">
             <div className="sm:hidden">{field.icon}</div>
-            <p className="hidden w-24 gap-1 font-semibold sm:flex">
-              <span className="w-5">{field.icon}</span> {field.label}:
+            <p className="hidden w-24 items-center text-base sm:flex">
+              <span className="mr-2 w-5">{field.icon}</span>
+              {field.label}:
             </p>
             {data ? (
-              <p className="rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark">
-                {field.value}
-              </p>
+              <p className="rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark">{field.value}</p>
             ) : (
-              <Skeleton
-                className={`h-9 w-24 rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark ${
-                  !loading && "animate-none"
-                }`}
-              />
+              <Skeleton className={`h-9 w-24 rounded bg-muted/50 px-2 py-1 text-lg dark:bg-muted-dark ${!loading && "animate-none"}`} />
             )}
           </div>
         ))}
